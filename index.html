@@ -161,6 +161,7 @@ html[data-theme=dark] #hl .s,html[data-theme=dark] #hl .n,html[data-theme=dark] 
 .right{overflow:auto}
 @media(min-width:900px) and (max-height:780px){.main{height:auto!important;min-height:0}.left{max-height:80vh}.right{overflow:visible}#view{flex:none;height:56vh;min-height:320px}}
 @media(max-width:899px){.main{height:auto}#view{height:48vh;min-height:300px}}
+.tabs{overflow-x:auto}.tabs button{flex:1 0 auto!important}#asm table{width:100%;border-collapse:collapse;font-size:12px}#asm td,#asm th{padding:3px 4px;border-bottom:1px solid var(--bd);text-align:left}#asm .bad{color:#d946ef;font-weight:600}.cg{display:grid;grid-template-columns:1fr 1fr;gap:6px}.cg label{font-size:12px;display:flex;flex-direction:column;gap:2px}.cg input,.cg select{border:1px solid var(--bd);background:var(--sf);color:var(--ink);border-radius:6px;padding:4px 6px;font:inherit;width:100%}#cal table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}#cal td,#cal th{padding:3px 4px;border-bottom:1px solid var(--bd);text-align:left}#cal .bad{color:#d946ef;font-weight:600}#cal .ok{color:var(--tl);font-weight:600}#asm .ok{color:var(--tl)}#asm input[type=range]{width:100%}
 </style>
 </head>
 <body>
@@ -168,7 +169,7 @@ html[data-theme=dark] #hl .s,html[data-theme=dark] #hl .n,html[data-theme=dark] 
 <nav><svg viewBox="0 0 32 32" width="30" height="30"><path d="M16 2 28 9v14L16 30 4 23V9z" style="fill:var(--acc)"/><path d="M16 2v14m0 0 12-7M16 16 4 9m12 7v14" stroke="#fff" stroke-opacity=".75" stroke-width="1.4" fill="none"/></svg><b>sugar</b><a href="#atelier" id="skip">Passer →</a></nav>
 <span class="tag">CAO · code · paramétrique</span>
 <h1>La CAO <em>par le code</em>,<br>directement dans ton navigateur.</h1>
-<p class="lead">Décris ta pièce ou écris quelques lignes : elle apparaît en 3D, se règle avec des curseurs, se vérifie, se met en plan et s’exporte vers SolidWorks. <span dir="rtl">تصميم ثلاثي الأبعاد بالكود، يخدم من المتصفح مباشرة.</span></p>
+<p class="lead">Décris ta pièce ou écris quelques lignes : elle apparaît en 3D, se règle avec des curseurs, se vérifie, se met en plan et s’exporte vers SolidWorks. <span dir="rtl">تصميم ثلاثي الأبعاد بالكود، يعمل مباشرة من المتصفح.</span></p>
 <div class="cta"><button class="go" id="enter">Ouvrir l’atelier →</button><button id="ex">Voir les pièces</button></div>
 <div class="acc"><span>Couleur du site</span><span id="lsw"></span></div>
 <div class="flow"><span>Description / code</span>›<span>Modèle 3D</span>›<span>Paramètres</span>›<span>Vérification</span>›<span>Dessin technique</span>›<span>Export</span></div>
@@ -193,7 +194,7 @@ return extrudeLinear({height:10}, subtract(base, trous))</div>
 </div>
 <div class="main">
 <aside class="left">
-<div class="tabs"><button data-t="tree" class="on">Arbre</button><button data-t="exl">Exemples (50)</button><button data-t="hp">Aide</button><button data-t="py">Python</button><button data-t="prm">Params</button><button data-t="ast">Assistant</button><button data-t="lib">Pièces</button><button data-t="ana">Analyse</button></div>
+<div class="tabs"><button data-t="tree" class="on">Arbre</button><button data-t="exl">Exemples (50)</button><button data-t="hp">Aide</button><button data-t="py">Python</button><button data-t="prm">Params</button><button data-t="ast">Assistant</button><button data-t="lib">Pièces</button><button data-t="ana">Analyse</button><button data-t="asm">Assemblage</button><button data-t="cal">Calculs</button></div>
 <div class="pane" id="tree"></div>
 <div class="pane" id="exl" hidden>
 <label>Au clic sur un exemple : <select id="op"><option value="rep">Remplacer mon code</option><option value="asm">Ajouter (corps séparés)</option><option value="uni">Ajouter et fusionner</option><option value="sub">Ajouter et soustraire</option><option value="int">Ajouter et intersecter</option></select></label>
@@ -226,6 +227,33 @@ return extrudeLinear({height:10}, subtract(base, trous))</div>
 <div class="pane" id="ast" hidden><p class="hint">Décris ta pièce en FR, EN ou العربية. Assistant à règles, sans IA en ligne : il génère du code paramétrique que tu peux ensuite modifier.</p><textarea id="aq" placeholder="Décris ta pièce… ex : plaque 100×60×10 avec 4 trous" spellcheck="false"></textarea><button class="ex go" id="ag">Générer la pièce</button><div id="aex"></div><div id="ar2"></div></div>
 <div class="pane" id="lib" hidden></div>
 <div class="pane" id="ana" hidden><h4>Matériau et masse</h4><select id="mat"></select><div id="mout"></div><h4>Vérification</h4><button class="ex go" id="chk2">✓ Vérifier la conception</button><div id="vout"></div><h4>Nomenclature</h4><div id="bout"></div><button class="ex" id="bcsv">⤓ Exporter la nomenclature (CSV)</button><h4>Versions</h4><div class="vrow"><input id="vn" placeholder="Nom de la version"><button id="vs">Enregistrer</button></div><div id="vl"></div></div>
+<div class="pane" id="cal" hidden><h4>Calculs d’ingénieur</h4>
+<p style="font-size:12px;color:var(--mut)">Formules analytiques sur poutre, arbre et colonne idéalisés, valeurs matériaux indicatives. Ce n’est pas un calcul par éléments finis : valide toujours avec les normes et un coefficient de sécurité adapté.</p>
+<div class="cg">
+<label>Matériau<select id="qm"></select></label>
+<label>Section<select id="qs"><option value="r">Rectangle b × h</option><option value="c">Disque Ø</option><option value="t">Tube Ø ext / Ø int</option></select></label>
+<label>Longueur L (mm)<input id="qL" type="number" value="500"></label>
+<label>b ou Ø ext (mm)<input id="qb" type="number" value="30"></label>
+<label>h ou Ø int (mm)<input id="qh" type="number" value="20"></label>
+<label>Effort F (N)<input id="qF" type="number" value="1000"></label>
+<label>Charge q (N/mm)<input id="qq" type="number" value="2"></label>
+<label>Couple T (N·m)<input id="qT" type="number" value="50"></label>
+<label>ΔT (°C)<input id="qD" type="number" value="40"></label>
+<label>Flexion<select id="qc"><option value="1">Console, F au bout</option><option value="2">Console, q répartie</option><option value="3">Appuis simples, F au centre</option><option value="4">Appuis simples, q répartie</option><option value="5">Encastrée-encastrée, F au centre</option></select></label>
+<label>Flambement (appuis)<select id="qk"><option value="1">Articulé-articulé (K=1)</option><option value="2">Encastré-libre (K=2)</option><option value="0.7">Encastré-articulé (K=0,7)</option><option value="0.5">Encastré-encastré (K=0,5)</option></select></label>
+</div>
+<button class="ex" id="qd2">Lire les dimensions du modèle</button>
+<div id="qo"></div>
+<details style="margin-top:10px"><summary>Nouvelles fonctions de forme</summary>
+<p><code>loft(a, b, {h:50, pas:12, twist:45})</code> transition entre deux esquisses 2D (cercle → carré…).</p>
+<p><code>balayage(profil2D, chemin)</code> profil le long d’un chemin 3D <code>[[x,y,z],…]</code>. Pour un tube : soustraire deux balayages. Aides : <code>helice(r, pas, tours)</code>, <code>arc3d(r, angle)</code>.</p>
+<p><code>miroir(forme, 'x')</code> symétrie fusionnée avec l’original ; <code>miroir(forme,'x',false)</code> seulement la copie.</p></details></div>
+<div class="pane" id="asm" hidden><h4>Assemblage</h4><div id="asi"></div>
+<label>Vue éclatée <b id="exv">0 %</b><input type="range" id="exs" min="0" max="100" value="0"></label>
+<button class="ex go" id="asc">Vérifier les interférences</button><button class="ex" id="asx">Effacer le marquage</button><div id="aso"></div>
+<h4>Contraintes (aide)</h4><p><code>part('Nom', forme, {at:[x,y,z], rot:[0,0,90], qty via at:[[..],[..]], mat:'acier', explode:[0,0,40]})</code></p>
+<p><code>contre(a, b, 'dessus', jeu)</code> pose <code>a</code> sur une face de <code>b</code> (dessus, dessous, droite, gauche, avant, arriere), centré.<br><code>centrer(a, b, 'xy')</code> aligne les centres (coaxial).</p>
+<button class="ex" id="asd">Charger un exemple d’assemblage</button></div>
 </aside>
 <section class="right">
 <div class="tools"><button id="tm">Mesurer</button><button id="tg" class="on">Grille</button><label>Fond <input type="color" id="bgc" value="#14161a"></label><label>Coupe <select id="cx"><option value="">Aucune</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select> <input type="range" id="cs" min="0" max="100" value="50"></label><button id="si">Importer STL</button><input type="file" id="sf" accept=".stl" hidden><button id="di">Importer DXF</button><input type="file" id="df" accept=".dxf" hidden><button id="obj">⤓ OBJ</button><button id="mf">⤓ 3MF</button><button id="step">⤓ STEP</button><button id="svg">⤓ SVG</button><button id="dxf">⤓ DXF</button><button id="tt">Sombre</button><button id="sb">Tranches</button><button id="gm">Déplacer</button><button id="rl">⟲</button><button id="rr">⟳</button></div>
@@ -413,9 +441,19 @@ function drawing(list,o){
   o2+='<text x="'+(v.cx+4)+'" y="'+(v.cy+5)+'" font-size="4" font-weight="700" fill="#111">'+v.t+'</text>'}
  const I=o.info||[];
  o2+='<g font-size="3.6" fill="#111"><text x="222" y="24" font-size="4.2" font-weight="700">Données</text>'+I.map((t,i)=>'<text x="222" y="'+(33+i*6)+'">'+t.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</text>').join('')+'</g>';
- o2+='<g stroke="#111" stroke-width=".5" fill="none"><rect x="280" y="256" width="130" height="31"/><line x1="280" y1="266" x2="410" y2="266"/><line x1="280" y1="277" x2="410" y2="277"/><line x1="345" y1="266" x2="345" y2="287"/></g>';
  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
- o2+='<g fill="#111" font-size="3.4"><text x="283" y="263" font-size="4.5" font-weight="700">'+esc(o.title||'Pièce')+'</text><text x="283" y="273">Échelle : '+lab+'</text><text x="283" y="284">Unité : mm</text><text x="348" y="273">Matière : '+esc(o.material||'—')+'</text><text x="348" y="284">'+esc(o.date||'')+' · sugar</text></g></svg>';
+ const bm=o.bom||[],cols=[222,232,292,304,366,404],hd=['N°','Désignation','Qté','Dimensions (mm)','Masse (g)'],mxr=10,nr=Math.min(bm.length,mxr)+1+(bm.length>mxr?1:0),th=5.2*nr;
+ let tb='<text x="222" y="74" font-size="4.2" font-weight="700" fill="#111">Nomenclature</text><g stroke="#111" stroke-width=".3" fill="none"><rect x="222" y="76" width="182" height="'+f(th)+'"/>';
+ for(let i=1;i<nr;i++)tb+='<line x1="222" y1="'+f(76+5.2*i)+'" x2="404" y2="'+f(76+5.2*i)+'"/>';
+ cols.slice(1,5).forEach(x=>tb+='<line x1="'+x+'" y1="76" x2="'+x+'" y2="'+f(76+th)+'"/>');tb+='</g><g font-size="3.2" fill="#111">';
+ hd.forEach((h,i)=>tb+='<text x="'+(cols[i]+1.2)+'" y="79.8" font-weight="700">'+h+'</text>');
+ bm.slice(0,mxr).forEach((r,i)=>{const y=f(79.8+5.2*(i+1));[String(i+1),esc(r.name),String(r.qty),r.dims.map(fx).join(' × '),fx(r.mass)].forEach((v,k)=>tb+='<text x="'+(cols[k]+1.2)+'" y="'+y+'">'+v+'</text>')});
+ if(bm.length>mxr)tb+='<text x="223" y="'+f(79.8+5.2*(mxr+1))+'">… + '+(bm.length-mxr)+' ligne(s) : voir la nomenclature CSV</text>';
+ o2+=tb+'</g>';
+ o2+='<g stroke="#111" stroke-width=".5" fill="none"><rect x="250" y="256" width="160" height="31"/><line x1="250" y1="266" x2="410" y2="266"/><line x1="250" y1="277" x2="410" y2="277"/><line x1="330" y1="266" x2="330" y2="277"/><line x1="290" y1="277" x2="290" y2="287"/><line x1="350" y1="277" x2="350" y2="287"/></g>';
+ o2+='<g fill="#111" font-size="3.2"><text x="252" y="263.4" font-size="4.8" font-weight="700">'+esc(o.title||'Pièce')+'</text><text x="252" y="272.6">Matière : '+esc(o.material||'—')+'</text><text x="332" y="272.6">Masse : '+esc(o.mass||'—')+'</text><text x="252" y="283.6">Échelle '+lab+'</text><text x="292" y="283.6">ISO 2768-mK · mm</text><text x="352" y="283.6">'+esc(o.date||'')+' · sugar · A3</text></g>';
+ o2+='<g stroke="#111" stroke-width=".35" fill="none"><circle cx="228" cy="268" r="4.3"/><circle cx="228" cy="268" r="2.2"/><path d="M237 265.8L247 263.8V272.2L237 270.2Z"/></g><text x="224" y="280" font-size="2.8" fill="#111">Projection : 3e dièdre</text><text x="224" y="284" font-size="2.8" fill="#111">(vue du dessus au-dessus)</text>';
+ o2+='</svg>';
  return{svg:o2,scale:lab,size:S}}
 return{gen,LIB,PARAM_DEMO,MAT,validate,bom,drawing,volume,bbox}}
 
@@ -561,13 +599,44 @@ return extrudeRotate({segments:64},polygon({points:[...o,...n.reverse()]}))`],
 ['Cube de Rubik (27 corps)',`const C=[[.15,.45,.85],[.1,.7,.7],[.1,.2,.5],[.7,.85,.95],[.3,.55,.75],[.95,.97,1]]
 const b=[]
 for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++)b.push(colorize(C[(x+y*2+z*3+9)%6],roundedCuboid({size:[18,18,18],roundRadius:2,segments:8,center:[x*20,y*20,z*20]})))
-return b`]
+return b`],
+['Loft : cercle vers carré (torsion)',`// Transition cercle → carré avec torsion de 45°
+const a=circle({radius:20,segments:96})
+const b=rectangle({size:[34,34]})
+return loft(a,b,{h:50,pas:12,twist:45})`],
+['Ressort (balayage sur hélice)',`// Fil Ø2,8 balayé le long d'une hélice : rayon 12, pas 6, 6 tours
+return balayage(circle({radius:1.4,segments:16}),helice(12,6,6,24))`],
+['Tube coudé (balayage)',`// Tube Ø16 / Ø12 : droit, coude 90° de rayon 25, droit
+const droit=[0,10,20,30].map(z=>[0,0,z])
+const coude=arc3d(25,90,16).slice(1).map(p=>[p[0],p[1],p[2]+30])
+const fin=[10,20,30].map(x=>[25+x,0,55])
+const ch=[...droit,...coude,...fin]
+const chInt=[[0,0,-5],...ch,[60,0,55]]
+return subtract(balayage(circle({radius:8,segments:48}),ch),balayage(circle({radius:6,segments:48}),chInt))`],
+['Engrenage 20 dents (développante)',`// Module 2, 20 dents, angle de pression 20°, alésage Ø8
+return engrenage(2,20,{alpha:20,l:12,alesage:8})`],
+['Paire d’engrenages (m=2, 20/40)',`// Entraxe = m (z1+z2) / 2. La 2e roue est tournée d'un demi-pas pour engrener
+const m=2,z1=20,z2=40,a=entraxe(m,z1,z2)
+const g1=engrenage(m,z1,{l:10,alesage:8})
+const g2=translate([a,0,0],rotateZ(Math.PI/z2,engrenage(m,z2,{l:10,alesage:12})))
+return [colorize([.45,.6,.8],g1),colorize([.55,.75,.75],g2)]`],
+['Visserie ISO : vis + rondelle + écrou',`// Plaque 12 mm, vis M8x30 CHC, rondelle et écrou normalisés
+const plaque=subtract(cuboid({size:[40,40,12],center:[0,0,-6]}),cylinder({radius:4.3,height:14,center:[0,0,-6],segments:32}))
+const vis=visCHC('M8',30)
+const rond=translate([0,0,-12-1.6],rondelle('M8'))
+const ecr=translate([0,0,-12-1.6-6.8],ecrou('M8'))
+return [plaque,colorize([.3,.35,.45],vis),rond,ecr]`],
+['Roulement 6204',`return roulement('6204')`],
+['Miroir : support symétrique',`// Moitié de support, puis symétrie par rapport au plan YZ
+const moitie=union(cuboid({size:[30,40,8],center:[15,0,4]}),cuboid({size:[8,40,40],center:[4,0,20]}))
+const trou=cylinder({radius:4,height:12,center:[20,0,4],segments:32})
+return miroir(subtract(moitie,trou),'x')`]
 ];
 const code=$('code'),view=$('view');let solids=[],vis=[],meshes=[];
 let sv=null;try{sv=localStorage.getItem('sugar2')}catch(e){}
 code.value=sv||EX[1][1];
 function note(t){$('msg').style.display=t?'block':'none';$('msg').textContent=t||''}
-function tab(t){document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));['tree','exl','hp','py','prm','ast','lib','ana'].forEach(i=>$(i).hidden=i!=t)}
+function tab(t){document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t==t));['tree','exl','hp','py','prm','ast','lib','ana','asm','cal','eng'].forEach(i=>$(i).hidden=i!=t)}
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>tab(b.dataset.t));
 if(!window.jscadModeling||!window.THREE)note('Impossible de charger le moteur 3D. Vérifie la connexion puis recharge la page.');
 else{
@@ -621,8 +690,125 @@ function fit(){grp.updateMatrixWorld(true);const bb=box();if(bb.isEmpty())return
 function tree(vols){const t=$('tree');t.innerHTML='<div class="row"><b>▾ Pièce1</b></div><div class="row">⌂ Origine</div><div class="row">▭ Plan de face · Plan de dessus · Plan de droite</div><div class="row"><b>▾ Corps volumiques('+solids.length+')</b></div>';
  solids.forEach((g,i)=>{const r=document.createElement('label');r.className='row';r.style.paddingLeft='18px';
   const c='#'+meshes[i].material.color.getHexString();
-  r.innerHTML='<input type="checkbox" '+(vis[i]?'checked':'')+'><input type="color" value="'+c+'" style="width:24px;height:20px;padding:0;border:1px solid #333">Corps '+(i+1)+' <small style="color:#5b6b7c">'+fmt(vols[i]/1000)+' cm³</small>';
+  r.innerHTML='<input type="checkbox" '+(vis[i]?'checked':'')+'><input type="color" value="'+c+'" style="width:24px;height:20px;padding:0;border:1px solid #333">'+pn(g,i)+' <small style="color:#5b6b7c">'+fmt(vols[i]/1000)+' cm³</small>';
   r.firstChild.onchange=e=>{vis[i]=e.target.checked;meshes[i].visible=vis[i];draw()};r.querySelector('input[type=color]').oninput=e=>{CO[i]=e.target.value;meshes[i].material.color.set(e.target.value);draw()};t.appendChild(r)})}
+
+const PM=new WeakMap(),DENS={acier:7.85,alu:2.70,inox:8.0,laiton:8.5,cuivre:8.96,plastique:1.05,bois:.7,titane:4.5};
+const pn=(g,i)=>{const p=PM.get(g);return p?p.name+(p.n>1?' #'+(p.k+1):''):'Corps '+(i+1)};
+API.part=(name,g,o={})=>{if(!g||!g.polygons)throw new Error('part() attend un solide 3D');const rot=o.rot||[0,0,0],at=o.at,list=Array.isArray(at)&&Array.isArray(at[0])?at:[at||null];
+ return list.map((pos,k)=>{let s=g;if(rot.some(a=>a))s=jm.transforms.rotate(rot.map(a=>a*Math.PI/180),s);if(pos)s=jm.transforms.translate(pos,s);if(o.color)s=jm.colors.colorize(o.color,s);
+  if(s===g)s=jm.transforms.translate([0,0,0],s);PM.set(s,{name,mat:o.mat,ex:o.explode,k,n:list.length});return s})};
+const bbx=g=>jm.measurements.measureBoundingBox(g),ctr=b=>[0,1,2].map(i=>(b[0][i]+b[1][i])/2);
+API.contre=(g,r,face='dessus',jeu=0)=>{const a=bbx(g),b=bbx(r),ca=ctr(a),cb=ctr(b),F={dessus:[2,1],dessous:[2,-1],droite:[0,1],gauche:[0,-1],arriere:[1,1],avant:[1,-1]}[face];
+ if(!F)throw new Error('contre : face inconnue (dessus, dessous, droite, gauche, avant, arriere)');const d=[0,1,2].map(i=>cb[i]-ca[i]);
+ d[F[0]]=F[1]>0?b[1][F[0]]+jeu-a[0][F[0]]:b[0][F[0]]-jeu-a[1][F[0]];return jm.transforms.translate(d,g)};
+API.centrer=(g,r,axes='xy')=>{const ca=ctr(bbx(g)),cb=ctr(bbx(r));return jm.transforms.translate([0,1,2].map(i=>'xyz'[i]&&axes.includes('xyz'[i])?cb[i]-ca[i]:0),g)};
+let exF=0,asmBase=[];
+function asmApply(){meshes.forEach((m,i)=>{const v=asmBase[i];if(v)m.position.set(v[0]*exF,v[1]*exF,v[2]*exF);else m.position.set(0,0,0)});grp.updateMatrixWorld(true);draw()}
+function asmUpdate(){try{const tag=solids.map(s=>PM.get(s)),any=tag.some(Boolean),I=$('asi');asmBase=[];
+ if(!any){I.innerHTML='<p>Aucune pièce nommée. Dans ton code : <code>return [part(\'Socle\', forme, {mat:\'acier\'})]</code></p>';return}
+ const bs=solids.map(bbx),mn=[0,1,2].map(i=>Math.min(...bs.map(b=>b[0][i]))),mx=[0,1,2].map(i=>Math.max(...bs.map(b=>b[1][i]))),c=[0,1,2].map(i=>(mn[i]+mx[i])/2),D=Math.max(mx[0]-mn[0],mx[1]-mn[1],mx[2]-mn[2])*.8;
+ let M=0,rows='';solids.forEach((s,i)=>{const p=tag[i];if(!p){asmBase.push(null);return}
+  const pc=ctr(bs[i]),dv=pc.map((x,k)=>x-c[k]),k=dv.map(Math.abs).indexOf(Math.max(...dv.map(Math.abs))),e=[0,0,0];
+  if(p.ex)asmBase.push(p.ex);else{e[k]=(Math.abs(dv[k])<1e-6?(k===2?1:0):Math.sign(dv[k]))*D*.5;if(!e[0]&&!e[1]&&!e[2])e[2]=0;asmBase.push(e)}
+  let v=0;try{v=Math.abs(jm.measurements.measureVolume(s))}catch(x){}const m=p.mat&&DENS[p.mat]?v/1000*DENS[p.mat]:0;M+=m;
+  rows+='<tr><td>'+pn(s,i)+'</td><td>'+(p.mat||'—')+'</td><td>'+fmt(v/1000)+' cm³</td><td>'+(m?fmt(m)+' g':'—')+'</td></tr>'});
+ I.innerHTML='<table><tr><th>Pièce</th><th>Matériau</th><th>Volume</th><th>Masse</th></tr>'+rows+'</table><p>Masse totale (pièces avec matériau) : <b>'+fmt(M)+' g</b></p>';asmApply()}catch(e){}}
+$('exs').oninput=e=>{exF=e.target.value/100;$('exv').textContent=e.target.value+' %';asmApply()};
+$('asx').onclick=()=>{meshes.forEach(m=>m.material.emissive.set(0));$('aso').innerHTML='';draw()};
+$('asc').onclick=()=>{const o=$('aso');o.textContent='Calcul…';setTimeout(()=>{try{const idx=solids.map((s,i)=>i).filter(i=>PM.get(solids[i])&&vis[i]),bs=idx.map(i=>bbx(solids[i])),hit=[];let n=0,cut=false;
+ meshes.forEach(m=>m.material.emissive.set(0));
+ for(let a=0;a<idx.length&&!cut;a++)for(let b=a+1;b<idx.length;b++){if(n++>600){cut=true;break}const A=bs[a],B=bs[b];if([0,1,2].some(k=>A[1][k]<=B[0][k]+.01||B[1][k]<=A[0][k]+.01))continue;
+  let v=0;try{v=Math.abs(jm.measurements.measureVolume(jm.booleans.intersect(solids[idx[a]],solids[idx[b]])))}catch(x){}
+  if(v>.5)hit.push([idx[a],idx[b],v])}
+ hit.forEach(h=>{[h[0],h[1]].forEach(i=>meshes[i].material.emissive.set(0x8a1fa0))});
+ o.innerHTML=hit.length?'<p class="bad">'+hit.length+' interférence(s) :</p><ul>'+hit.map(h=>'<li>'+pn(solids[h[0]],h[0])+' × '+pn(solids[h[1]],h[1])+' : '+fmt(h[2])+' mm³</li>').join('')+'</ul>':'<p class="ok">✓ Aucune interférence entre les pièces nommées.</p>';if(cut)o.innerHTML+='<p>Vérification limitée aux 600 premières paires.</p>';draw()}catch(e){o.textContent='Vérification impossible : '+e.message}},30)};
+const ASMX=`// Assemblage : part() nomme les pièces, contre() les pose sans calculer les cotes à la main
+const L=80,l=60
+const pos=[[-30,-20,5],[30,-20,5],[-30,20,5],[30,20,5]]
+const socleG=subtract(cuboid({size:[L,l,10]}),pos.map(p=>cylinder({radius:2.2,height:12,center:[p[0],p[1],0],segments:24})))
+const colG=contre(cylinder({radius:12,height:40,segments:48}),socleG,'dessus')
+const capG=contre(cylinder({radius:16,height:6,segments:48}),colG,'dessus')
+const vis=cylinder({radius:2,height:14,segments:24})
+return [
+ part('Socle',socleG,{mat:'acier',color:[.45,.55,.7]}),
+ part('Colonne',colG,{mat:'alu',color:[.6,.75,.8]}),
+ part('Chapeau',capG,{mat:'inox',color:[.8,.85,.9],explode:[0,0,60]}),
+ part('Vis M4',vis,{mat:'acier',at:pos,color:[.3,.35,.45],explode:[0,0,40]})
+]`;
+$('asd').onclick=()=>{code.value=ASMX;run(true);tab('asm')};
+
+/*NEW1*/
+const GM=jm.geometries,area2=p=>p.reduce((s,q,i)=>{const r=p[(i+1)%p.length];return s+q[0]*r[1]-r[0]*q[1]},0)/2;
+function outline(g){let o=null;try{o=GM.geom2.toOutlines?GM.geom2.toOutlines(g):null}catch(e){}if(!o||!o.length)o=[GM.geom2.toPoints(g)];
+ o=o.filter(p=>p&&p.length>2).sort((a,b)=>Math.abs(area2(b))-Math.abs(area2(a)));if(!o.length)throw new Error('Profil 2D vide : donne une esquisse (circle, rectangle, polygon…)');
+ const p=o[0].map(q=>[q[0],q[1]]);if(area2(p)<0)p.reverse();return p}
+function resamp(p,n){const L=[0];for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];L.push(L[i]+Math.hypot(b[0]-a[0],b[1]-a[1]))}
+ const T=L[p.length],r=[];for(let k=0;k<n;k++){const d=T*k/n;let i=0;while(i<p.length-1&&L[i+1]<=d)i++;const a=p[i],b=p[(i+1)%p.length],s=(d-L[i])/((L[i+1]-L[i])||1);r.push([a[0]+(b[0]-a[0])*s,a[1]+(b[1]-a[1])*s])}return r}
+function align(a,b){let best=0,bd=1e18;for(let s=0;s<b.length;s++){let d=0;for(let i=0;i<a.length;i+=4){const q=b[(i+s)%b.length];d+=(a[i][0]-q[0])**2+(a[i][1]-q[1])**2}if(d<bd){bd=d;best=s}}return b.map((_,i)=>b[(i+best)%b.length])}
+function mkSl(sl,base){let s=jm.extrusions.extrudeFromSlices({numberOfSlices:sl.length,capStart:true,capEnd:true,callback:(pr,i)=>GM.slice.fromPoints(sl[i])},base);
+ try{if(jm.measurements.measureVolume(s)<0)s=GM.geom3.invert(s)}catch(e){}return s}
+function loftSl(a,b,o){const n=o.n||96,h=o.h==null?30:o.h,st=Math.max(1,Math.round(o.pas||1)),tw=(o.twist||0)*Math.PI/180,A=resamp(a,n),B=align(A,resamp(b,n)),sl=[];
+ for(let k=0;k<=st;k++){const t=k/st,c=Math.cos(tw*t),s=Math.sin(tw*t);sl.push(A.map((q,i)=>{const x=q[0]+(B[i][0]-q[0])*t,y=q[1]+(B[i][1]-q[1])*t;return[x*c-y*s,x*s+y*c,h*t]}))}return sl}
+API.loft=(a,b,o={})=>mkSl(loftSl(outline(a),outline(b),o),a);
+const v3s=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],v3n=v=>{const l=Math.hypot(v[0],v[1],v[2])||1;return[v[0]/l,v[1]/l,v[2]/l]},v3d=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],v3x=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+function frames(P,prof){const n=P.length;if(n<2)throw new Error('balayage : le chemin doit avoir au moins 2 points');const sl=[];let N=null;
+ for(let i=0;i<n;i++){const T=v3n(v3s(P[Math.min(i+1,n-1)],P[Math.max(i-1,0)])),ref=Math.abs(T[0])<.9?[1,0,0]:[0,1,0],u=N||ref;
+  N=v3n(v3s(u,T.map(x=>x*v3d(u,T))));const B=v3x(T,N);
+  sl.push(prof.map(q=>[P[i][0]+q[0]*N[0]+q[1]*B[0],P[i][1]+q[0]*N[1]+q[1]*B[1],P[i][2]+q[0]*N[2]+q[1]*B[2]]))}return sl}
+API.balayage=(prof,path)=>mkSl(frames(path,outline(prof)),prof);
+API.helice=(r,pas,tours,n=24)=>{const N=Math.round(tours*n);return Array.from({length:N+1},(_,i)=>{const a=2*Math.PI*i/n;return[r*Math.cos(a),r*Math.sin(a),pas*i/n]})};
+API.arc3d=(r,ang,n=24)=>Array.from({length:n+1},(_,i)=>{const a=ang*Math.PI/180*i/n;return[r-r*Math.cos(a),0,r*Math.sin(a)]});
+API.miroir=(g,ax='x',fusion=true)=>{const m=jm.transforms.mirror({normal:ax==='y'?[0,1,0]:ax==='z'?[0,0,1]:[1,0,0]},g);return fusion?jm.booleans.union(g,m):m};
+const MATS=[['Acier S235',210,235,7.85,12,.30],['Acier S355',210,355,7.85,12,.30],['Inox 304',193,215,8.0,17.3,.29],['Alu 6061-T6',69,240,2.70,23.6,.33],['Titane Ti-6Al-4V',114,880,4.43,8.6,.34],['Laiton',100,200,8.5,19,.34],['Cuivre',120,70,8.96,16.5,.34],['ABS',2.2,40,1.05,90,.35],['Chêne',11,40,.7,5,.3]];
+function calcCore(o){const M=MATS[o.m],E=M[1]*1000,sy=M[2],rho=M[3],al=M[4]*1e-6,nu=M[5],G=E/(2*(1+nu)),{L,b,h,F,q,T,dT}=o,Tn=T*1000;let A,I,Im,J,c,tau;
+ if(o.s==='r'){if(b<=0||h<=0)throw new Error('b et h doivent être > 0');A=b*h;I=b*h**3/12;Im=Math.min(b*h**3,h*b**3)/12;c=h/2;const a=Math.max(b,h),s=Math.min(b,h);J=a*s**3*(1/3-.21*(s/a)*(1-s**4/(12*a**4)));tau=Tn*(3*a+1.8*s)/(a*a*s*s)}
+ else{const D=b,d=o.s==='c'?0:h;if(D<=0||d<0||d>=D)throw new Error('Il faut 0 ≤ Ø int < Ø ext');A=Math.PI*(D*D-d*d)/4;I=Math.PI*(D**4-d**4)/64;Im=I;J=2*I;c=D/2;tau=Tn*c/J}
+ const bc={1:[F*L**3/(3*E*I),F*L],2:[q*L**4/(8*E*I),q*L*L/2],3:[F*L**3/(48*E*I),F*L/4],4:[5*q*L**4/(384*E*I),q*L*L/8],5:[F*L**3/(192*E*I),F*L/8]}[o.c],sb=bc[1]*c/I,sa=F/A,Pcr=Math.PI**2*E*Im/(o.k*L)**2,sth=E*al*dT;
+ return[{k:'Aire de la section',v:A,u:'mm²'},{k:'Moment quadratique I',v:I,u:'mm⁴'},{k:'Masse de la barre',v:A*L/1000*rho,u:'g'},
+ {k:'Flexion : flèche max',v:bc[0],u:'mm'},{k:'Flexion : moment max',v:bc[1]/1000,u:'N·m'},{k:'Flexion : contrainte max',v:sb,u:'MPa',sf:sy/sb},
+ {k:'Traction : contrainte F/A',v:sa,u:'MPa',sf:sy/sa},{k:'Traction : allongement',v:F*L/(A*E),u:'mm'},
+ {k:'Torsion : contrainte max',v:tau,u:'MPa',sf:.577*sy/tau},{k:'Torsion : angle de vrillage',v:Tn*L/(G*J)*180/Math.PI,u:'°'},
+ {k:'Thermique : dilatation libre',v:al*L*dT,u:'mm'},{k:'Thermique : contrainte si bloqué',v:sth,u:'MPa',sf:sy/sth},
+ {k:'Flambement d’Euler : charge critique',v:Pcr,u:'N',sf:Pcr/F}]}
+const nf=v=>!Number.isFinite(v)?'—':(Math.abs(v)>=1e6||(Math.abs(v)<.001&&v!==0))?v.toExponential(3):String(+v.toPrecision(4));
+const qO=$('qo');MATS.forEach((m,i)=>{const e=document.createElement('option');e.value=i;e.textContent=m[0];$('qm').appendChild(e)});
+function calc(){try{const g=i=>+$(i).value,r=calcCore({m:+$('qm').value,s:$('qs').value,L:g('qL'),b:g('qb'),h:g('qh'),F:g('qF'),q:g('qq'),T:g('qT'),dT:g('qD'),c:$('qc').value,k:+$('qk').value});
+ qO.innerHTML='<table><tr><th>Grandeur</th><th>Valeur</th><th>Coef. sécurité</th></tr>'+r.map(x=>'<tr><td>'+x.k+'</td><td>'+nf(x.v)+' '+x.u+'</td><td>'+(x.sf==null?'':'<span class="'+(x.sf>=2?'ok':x.sf<1.5?'bad':'')+'">'+nf(x.sf)+(x.sf<1?' ⚠':'')+'</span>')+'</td></tr>').join('')+'</table><p style="font-size:12px;color:var(--mut)">Coefficient ≥ 2 en vert, &lt; 1,5 en violet. Contrainte de torsion admissible prise à 0,577 × Re. Flexion en petites déformations, section constante.</p>'}catch(e){qO.innerHTML='<p class="bad">'+e.message+'</p>'}}
+document.querySelectorAll('#cal input,#cal select').forEach(e=>e.oninput=calc);
+$('qd2').onclick=()=>{try{const bs=solids.filter((s,i)=>vis[i]).map(bbx);if(!bs.length)return;const d=[0,1,2].map(i=>Math.max(...bs.map(b=>b[1][i]))-Math.min(...bs.map(b=>b[0][i]))).sort((a,b)=>b-a),r=x=>Math.round(x*10)/10;$('qL').value=r(d[0]);$('qb').value=r(d[1]);$('qh').value=r(d[2]);$('qs').value='r';calc()}catch(e){}};
+calc();
+/*NEW2*/
+
+/*NEW3*/
+(function(){const P=jm.primitives,B=jm.booleans,X=jm.extrusions,TR=jm.transforms,rad=a=>a*Math.PI/180,inv=a=>Math.tan(a)-a;
+ function gearPts(m,z,o){const al=rad(o.alpha==null?20:o.alpha),r=m*z/2,rb=r*Math.cos(al),ra=r+m*(o.tete==null?1:o.tete),rf=r-m*(o.pied==null?1.25:o.pied),r0=Math.max(rb,rf),n=o.n||8,
+  th=x=>Math.max(Math.PI/(2*z)+inv(al)-inv(Math.acos(Math.min(1,rb/x))),.004),pol=(q,a)=>[q*Math.cos(a),q*Math.sin(a)],pts=[];
+  for(let k=0;k<z;k++){const o0=2*Math.PI*k/z,R=[];for(let i=0;i<=n;i++)R.push(r0+(ra-r0)*i/n);
+   if(rf<rb)pts.push(pol(rf,o0-th(rb)));
+   R.forEach(q=>pts.push(pol(q,o0-th(q))));pts.push(pol(ra,o0));
+   R.slice().reverse().forEach(q=>pts.push(pol(q,o0+th(q))));
+   if(rf<rb)pts.push(pol(rf,o0+th(rb)));
+   const a1=o0+th(r0),a2=o0+2*Math.PI/z-th(r0);pts.push(pol(Math.min(r0,rf>=rb?rf:rf),(a1+a2)/2))}
+  return pts}
+ API.engrenage2d=(m,z,o={})=>{if(z<6)throw new Error('engrenage : au moins 6 dents (12 conseillées sans correction de profil)');return P.polygon({points:gearPts(m,z,o)})};
+ API.engrenage=(m,z,o={})=>{const l=o.l||10;let g=X.extrudeLinear({height:l},API.engrenage2d(m,z,o));if(o.alesage)g=B.subtract(g,P.cylinder({radius:o.alesage/2,height:l+2,center:[0,0,l/2],segments:48}));return g};
+ API.entraxe=(m,z1,z2)=>m*(z1+z2)/2;
+ API.rapport=(z1,z2)=>z2/z1;
+ const D={M3:[3,.5,5.5,3,2.5,5.5,2.4,3.2,7,.5],M4:[4,.7,7,4,3,7,3.2,4.3,9,.8],M5:[5,.8,8.5,5,4,8,4.7,5.3,10,1],M6:[6,1,10,6,5,10,5.2,6.4,12,1.6],M8:[8,1.25,13,8,6,13,6.8,8.4,16,1.6],M10:[10,1.5,16,10,8,16,8.4,10.5,20,2],M12:[12,1.75,18,12,10,18,10.8,13,24,2.5],M16:[16,2,24,16,14,24,14.8,17,30,3],M20:[20,2.5,30,20,17,30,18,21,37,3]};
+ // [d, pas, dk, k, s_socket, s_hex, m_ecrou, d1_rond, d2_rond, h_rond]  (valeurs nominales ISO 4762 / 4017 / 4032 / 7089)
+ const row=s=>{const r=D[s];if(!r)throw new Error('Taille inconnue : '+s+' (M3, M4, M5, M6, M8, M10, M12, M16, M20)');return r},hexR=s=>s/Math.sqrt(3),cyl=(r,h,z,sg=48)=>P.cylinder({radius:r,height:h,center:[0,0,z],segments:sg});
+ API.visCHC=(s,L)=>{const r=row(s),d=r[0],dk=r[2],k=r[3],sk=r[4];return B.subtract(B.union(cyl(dk/2,k,k/2),cyl(d/2,L,-L/2,32)),cyl(hexR(sk),k*.6+.01,k*.7+.005,6))};
+ API.visH=(s,L)=>{const r=row(s),d=r[0],sh=r[5],k={M3:2,M4:2.8,M5:3.5,M6:4,M8:5.3,M10:6.4,M12:7.5,M16:10,M20:12.5}[s];return B.union(cyl(hexR(sh),k,k/2,6),cyl(d/2,L,-L/2,32))};
+ API.ecrou=s=>{const r=row(s);return B.subtract(cyl(hexR(r[5]),r[6],r[6]/2,6),cyl(r[0]/2,r[6]+2,r[6]/2,32))};
+ API.rondelle=s=>{const r=row(s);return B.subtract(cyl(r[8]/2,r[9],r[9]/2),cyl(r[7]/2,r[9]+2,r[9]/2))};
+ const RL={'6000':[10,26,8],'6001':[12,28,8],'6002':[15,32,9],'6003':[17,35,10],'6004':[20,42,12],'6005':[25,47,12],'6200':[10,30,9],'6201':[12,32,10],'6202':[15,35,11],'6203':[17,40,12],'6204':[20,47,14],'6205':[25,52,15],'6206':[30,62,16],'6207':[35,72,17],'6208':[40,80,18],'6300':[10,35,11],'6301':[12,37,12],'6302':[15,42,13],'6303':[17,47,14],'6304':[20,52,15],'6305':[25,62,17],'6306':[30,72,19]};
+ API.roulement=ref=>{const r=RL[String(ref)];if(!r)throw new Error('Roulement inconnu : '+ref+' (séries 6000, 6200, 6300)');const[d,Dx,b]=r,rp=(d+Dx)/4,Db=(Dx-d)*.28,nb=Math.max(7,Math.round(Math.PI*rp/(Db*1.25))),
+  ring=(ri,ro)=>B.subtract(cyl(ro,b,b/2,64),cyl(ri,b+2,b/2,64)),out=[ring(Dx/2-(Dx-d)*.2,Dx/2),ring(d/2,d/2+(Dx-d)*.2)];
+  for(let i=0;i<nb;i++){const a=2*Math.PI*i/nb;out.push(TR.translate([rp*Math.cos(a),rp*Math.sin(a),b/2],P.sphere({radius:Db/2,segments:16})))}return out};
+ API.__ISO={D,RL};
+ const p0=API.part;API.part=(name,g,o)=>Array.isArray(g)?g.flat(Infinity).flatMap(x=>p0(name,x,o)):p0(name,g,o)})();
+/*NEW4*/
 const CO={};let H=[],hp=-1,sh2=[];
 function run(doFit){if(doFit)for(const k in CO)delete CO[k];sh2=[];hlr();if(H[hp]!==code.value){H=H.slice(0,hp+1);H.push(code.value);hp=H.length-1}hist();
  meshes.forEach(m=>{grp.remove(m);m.geometry.dispose();m.material.dispose()});meshes=[];solids=[];vis=[];
@@ -635,7 +821,7 @@ function run(doFit){if(doFit)for(const k in CO)delete CO[k];sh2=[];hlr();if(H[hp
   note('');mark(0);grp.updateMatrixWorld(true);
   const sz=box().getSize(new THREE.Vector3());
   $('dim').textContent='Dimensions : '+fmt(sz.x)+' × '+fmt(sz.z)+' × '+fmt(sz.y)+' mm · Volume : '+fmt(vols.reduce((a,b)=>a+b,0)/1000)+' cm³';
-  tree(vols);if(doFit)fit()
+  tree(vols);if(doFit)fit();asmUpdate()
  }catch(e){const L=errLine(e);note((L?'Ligne '+L+' : ':'')+explain(e));mark(L);$('dim').textContent='';$('tree').innerHTML='<div class="row"><b>▾ Pièce1</b></div>'}
  clip();sliceC();gizmo();draw();try{localStorage.setItem('sugar2',code.value)}catch(e){}}
 async function save(name,data){
@@ -913,7 +1099,7 @@ $('step').onclick=()=>{
  save('sugar-piece.step',new Blob([txt],{type:'application/step'}))};
 const FT=makeFeatures(jm);
 const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-const vs=()=>{const L=[],N=[];solids.forEach((g,i)=>{if(vis[i]){L.push(g);N.push('Corps '+(i+1))}});return{L,N}};
+const vs=()=>{const L=[],N=[];solids.forEach((g,i)=>{if(vis[i]){L.push(g);N.push(typeof pn==='function'?pn(g,i):'Corps '+(i+1))}});return{L,N}};
 const fm=(x,n=1)=>Number(x).toFixed(n).replace(/\.0+$/,'');
 /* --- Paramètres --- */
 const PRE=/^(\s*const\s+)([A-Za-z_$][\w$]*)(\s*=\s*)(-?\d+(?:\.\d+)?)(\s*;?\s*\/\/\s*@p\s*)(.*)$/;
@@ -974,7 +1160,7 @@ function openDrawing(){const{L,N}=vs();if(!L.length){note('Aucune pièce visible
  note('Génération du dessin technique…');setTimeout(()=>{try{
   const b=FT.bom(L,N,ms.value),bb=L.map(FT.bbox),mn=[0,1,2].map(k=>Math.min(...bb.map(x=>x[0][k]))),mx=[0,1,2].map(k=>Math.max(...bb.map(x=>x[1][k])));
   const d=FT.drawing(L,{title:$('pn').value.trim()||'Pièce1',material:ms.value,date:new Date().toISOString().slice(0,10),
-   info:['Dimensions hors-tout : '+[0,1,2].map(k=>fm(mx[k]-mn[k])).join(' × ')+' mm','Volume : '+fm(b.totalVol/1000,2)+' cm³','Masse ('+ms.value+') : '+fm(b.totalMass,1)+' g','Nombre de corps : '+L.length,'Projection : 3 vues, arêtes cachées en tirets']});
+   mass:fm(b.totalMass,1)+' g',bom:b.rows,info:['Dimensions hors-tout : '+[0,1,2].map(k=>fm(mx[k]-mn[k])).join(' × ')+' mm','Volume : '+fm(b.totalVol/1000,2)+' cm³','Masse ('+ms.value+') : '+fm(b.totalMass,1)+' g','Nombre de corps : '+L.length,'Projection : 3 vues, arêtes cachées en tirets','Tolérances générales : ISO 2768-mK','Rugosité générale : Ra 3,2 µm']});
   CURSVG=d.svg;$('dsv').innerHTML=d.svg;$('dsc').textContent='Échelle '+d.scale;$('dlg').classList.add('on');note('')}catch(e){note('Dessin impossible : '+e.message)}},30)}
 $('dess').onclick=openDrawing;$('dx').onclick=()=>$('dlg').classList.remove('on');
 $('dlg').addEventListener('click',e=>{if(e.target===$('dlg'))$('dlg').classList.remove('on')});
@@ -984,6 +1170,121 @@ $('dpdf').onclick=()=>{if(!window.jspdf){note('PDF indisponible : bibliothèque 
  im.onload=()=>{const c=document.createElement('canvas');c.width=2520;c.height=1782;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
   const p=new window.jspdf.jsPDF({unit:'mm',format:'a3',orientation:'landscape'});p.addImage(c.toDataURL('image/jpeg',.92),'JPEG',0,0,420,297);save('sugar-dessin.pdf',p.output('blob'))};
  im.onerror=()=>note('Conversion PDF impossible. Utilise l’export SVG.');im.src=u};
+
+/*NEW5*/
+setTimeout(()=>{const h=$('lib');if(!h)return;const box=document.createElement('div');
+ box.innerHTML='<h4>Engrenage droit (développante)</h4><div class="cg"><label>Module m<input id="gm" type="number" value="2" step=".25" min=".5"></label><label>Dents z<input id="gz" type="number" value="20" min="6"></label><label>Angle α (°)<input id="ga" type="number" value="20"></label><label>Largeur (mm)<input id="gl" type="number" value="10"></label><label>Alésage Ø (mm)<input id="gb" type="number" value="8"></label><label>2e roue z (option)<input id="gz2" type="number" value="40"></label></div><div id="gout" style="font-size:12px;margin:6px 0"></div><button class="ex go" id="gins">Insérer l’engrenage</button>'
+ +'<h4>Visserie et roulements ISO</h4><div class="cg"><label>Pièce<select id="ik"><option value="visCHC">Vis CHC ISO 4762</option><option value="visH">Vis H ISO 4017</option><option value="ecrou">Écrou ISO 4032</option><option value="rondelle">Rondelle ISO 7089</option><option value="roulement">Roulement à billes</option></select></label><label>Taille / réf.<select id="iz"></select></label><label>Longueur (mm)<input id="il" type="number" value="25"></label></div><div id="iout" style="font-size:12px;margin:6px 0"></div><button class="ex go" id="iins">Insérer la pièce</button><p class="hint">Dimensions nominales des normes. La vis a sa tête au plan Z = 0 et le corps vers le bas, prête pour <code>contre()</code> et <code>part()</code>.</p>';
+ h.appendChild(box);
+ const iz=$('iz'),ik=$('ik'),I=API.__ISO,fillZ=()=>{iz.innerHTML='';(ik.value==='roulement'?Object.keys(I.RL):Object.keys(I.D)).forEach(k=>{const o=document.createElement('option');o.textContent=k;iz.appendChild(o)});$('il').disabled=!/^vis/.test(ik.value);info2()};
+ const info2=()=>{const v=ik.value,z=iz.value;try{if(v==='roulement'){const r=I.RL[z];$('iout').textContent='Ø int '+r[0]+' · Ø ext '+r[1]+' · largeur '+r[2]+' mm'}else{const r=I.D[z];$('iout').textContent=v==='rondelle'?'Ø int '+r[7]+' · Ø ext '+r[8]+' · épaisseur '+r[9]+' mm':v==='ecrou'?'Clé '+r[5]+' mm · hauteur '+r[6]+' mm':'Ø '+r[0]+' · pas '+r[1]+' · tête Ø '+r[2]+' / clé '+(v==='visCHC'?r[4]+' (empreinte)':r[5])+' mm'}}catch(e){}};
+ ik.onchange=fillZ;iz.onchange=info2;fillZ();
+ $('iins').onclick=()=>{const v=ik.value,z=iz.value,L=+$('il').value;code.value='// '+$('iout').textContent+'\nreturn '+v+"('"+z+"'"+(/^vis/.test(v)?','+L:'')+')';run(true)};
+ const gi=()=>{const m=+$('gm').value,z=+$('gz').value,a=+$('ga').value,z2=+$('gz2').value;if(!(m>0)||!(z>=6)){$('gout').textContent='m > 0 et z ≥ 6';return null}
+  const r=m*z/2,nf=v=>String(+v.toFixed(3));let s='Ø primitif '+nf(2*r)+' · Ø tête '+nf(2*r+2*m)+' · Ø pied '+nf(2*r-2.5*m)+' · pas '+nf(Math.PI*m)+' mm';if(z<17&&a>=20)s+=' · z < 17 : sous-taillage possible';if(z2>=6)s+=' · avec z='+z2+' : entraxe '+nf(m*(z+z2)/2)+' mm, rapport '+nf(z2/z);$('gout').textContent=s;return{m,z,a,z2}};
+ document.querySelectorAll('#gm,#gz,#ga,#gz2').forEach(e=>e.oninput=gi);gi();
+ $('gins').onclick=()=>{const g=gi();if(!g)return;const l=+$('gl').value||10,b=+$('gb').value||0;code.value='// Engrenage droit : module '+g.m+', '+g.z+' dents, angle de pression '+g.a+'°\n// Engrène avec une roue z='+g.z2+' à l’entraxe '+(g.m*(g.z+g.z2)/2)+' mm : utilise entraxe('+g.m+','+g.z+','+g.z2+')\nreturn engrenage('+g.m+','+g.z+',{alpha:'+g.a+',l:'+l+',alesage:'+b+'})';run(true)}},0);
+/*ENG*/
+(()=>{
+const LG=()=>$('lg').value,IDX={fr:0,en:1,ar:2};
+const X={tab:'Ingénierie|Engineering|هندسة',ht:'Tolérances et ajustements (ISO 286)|Tolerances and fits (ISO 286)|التفاوتات والتوافقات (ISO 286)',nom:'Ø nominal (mm)|Nominal Ø (mm)|القطر الاسمي (مم)',fit:'Ajustement|Fit|التوافق',ho:'Alésage|Hole|الثقب',sh:'Arbre|Shaft|العمود',jx:'Jeu maxi|Max clearance|أقصى فراغ',jn:'Jeu mini|Min clearance|أدنى فراغ',sx:'Serrage maxi|Max interference|أقصى ضغط',tc:'Ajustement avec jeu|Clearance fit|توافق بفراغ',ti:'Ajustement serré|Interference fit|توافق بضغط',tt:'Ajustement incertain|Transition fit|توافق انتقالي',nt:'Valeurs calculées par les formules ISO 286 (écart ±1 µm avec les tables) : vérifie avec les tables normalisées.|Values computed from ISO 286 formulas (±1 µm vs tables): check with the standard tables.|قيم محسوبة بمعادلات ISO 286 (±1 ميكرون عن الجداول): تحقق من الجداول المعيارية.',hk:'Cinématique des mécanismes|Mechanism kinematics|حركية الآليات',me:'Mécanisme|Mechanism|الآلية',cs:'Bielle-manivelle|Crank-slider|محرك-ذراع-مكبس',fb:'Quadrilatère articulé|Four-bar linkage|رباعي المفاصل',r:'Manivelle r (mm)|Crank r (mm)|الذراع r (مم)',l:'Bielle l (mm)|Rod l (mm)|الوصلة l (مم)',w:'Vitesse (tr/min)|Speed (rpm)|السرعة (دورة/د)',g:'Bâti g (mm)|Ground g (mm)|القاعدة g (مم)',c:'Coupleur c (mm)|Coupler c (mm)|الرابط c (مم)',d:'Balancier d (mm)|Rocker d (mm)|الذراع المتأرجح d (مم)',pl:'▶ Animer|▶ Animate|▶ تحريك',ps:'❚❚ Pause|❚❚ Pause|❚❚ إيقاف',po:'Position|Position|الموضع',ve:'Vitesse|Velocity|السرعة',ac:'Accélération|Acceleration|التسارع',mx:'maxi sur un tour|max over one turn|الأقصى في دورة',bad:'Mécanisme impossible (longueurs incohérentes).|Impossible mechanism (inconsistent lengths).|آلية مستحيلة (أطوال غير متوافقة).',gr:'Grashof : manivelle complète|Grashof: full crank rotation|غراسهوف: دوران كامل للذراع',ng:'Pas de rotation complète (balancier)|No full rotation (rocker)|لا دوران كامل (متأرجح)',hc:'Estimation du coût|Cost estimate|تقدير التكلفة',pr:'Prix matière (par kg)|Material price (per kg)|سعر المادة (للكغ)',sc:'Chutes (%)|Scrap (%)|الفاقد (%)',mi:'Temps d’usinage (min)|Machining time (min)|زمن التشغيل (د)',ra:'Taux horaire|Hourly rate|الأجرة بالساعة',qy:'Quantité|Quantity|الكمية',ms:'Masse (g)|Mass (g)|الكتلة (غ)',gm:'Lire la masse du modèle|Read model mass|قراءة كتلة النموذج',cm:'Matière|Material|المادة',cu:'Usinage|Machining|التشغيل',cp:'Par pièce|Per part|للقطعة',ct:'Total|Total|المجموع'};
+const t=k=>X[k].split('|')[IDX[LG()]]||X[k].split('|')[0];
+const fx=(v,n=1)=>(+v).toFixed(n);
+const FITS={'H7/g6':['H',7,'g',6],'H7/h6':['H',7,'h',6],'H7/f7':['H',7,'f',7],'H8/f7':['H',8,'f',7],'H7/k6':['H',7,'k',6],'H7/n6':['H',7,'n',6]};
+const RG=[1,3,6,10,18,30,50,80,120,180,250,315,400,500],MU={5:7,6:10,7:16,8:25,9:40};
+function it(D,g){const i=.45*Math.cbrt(D)+.001*D;return Math.round(MU[g]*i)}
+function tol(D,f){const k=Math.max(1,RG.findIndex(x=>D<=x)),Dg=Math.sqrt(RG[k-1]*RG[k]);const[,gh,ls,gs]=FITS[f]?[0,...FITS[f].slice(1)]:[0,7,'g',6];
+ const ITh=it(Dg,gh),ITs=it(Dg,gs);let es,ei;
+ if(ls==='h')es=0;else if(ls==='g')es=-Math.round(2.5*Math.pow(Dg,.34));else if(ls==='f')es=-Math.round(5.5*Math.pow(Dg,.41));
+ if(es!==undefined)ei=es-ITs;else{ei=ls==='k'?Math.round(.6*Math.cbrt(Dg)):Math.round(5*Math.pow(Dg,.34));es=ei+ITs}
+ return{ES:ITh,EI:0,es,ei,ITh,ITs}}
+const p=document.createElement('div');p.className='pane';p.id='eng';p.hidden=true;
+p.innerHTML='<h4 data-k="ht"></h4><div class="cg"><label><span data-k="nom"></span><input id="tD" type="number" value="25" min="1" max="500"></label><label><span data-k="fit"></span><select id="tF">'+Object.keys(FITS).map(k=>'<option>'+k+'</option>').join('')+'</select></label></div><div id="tO" style="font-size:12.5px;margin:6px 0"></div><p class="hint" data-k="nt"></p>'
++'<h4 data-k="hk"></h4><div class="cg"><label><span data-k="me"></span><select id="kM"><option value="cs" data-k="cs"></option><option value="fb" data-k="fb"></option></select></label><label><span data-k="w"></span><input id="kW" type="number" value="60"></label><label><span data-k="r"></span><input id="kR" type="number" value="30"></label><label><span data-k="l"></span><input id="kL" type="number" value="100"></label><label><span data-k="g"></span><input id="kG" type="number" value="80"></label><label><span data-k="c"></span><input id="kC" type="number" value="90"></label><label><span data-k="d"></span><input id="kD" type="number" value="70"></label></div><canvas id="kc" width="320" height="170" style="width:100%;max-width:340px;border:1px solid var(--bd);border-radius:8px;background:var(--sf)"></canvas><div id="kO" style="font-size:12.5px;margin:6px 0"></div><button class="ex go" id="kB"></button>'
++'<h4 data-k="hc"></h4><div class="cg"><label><span data-k="ms"></span><input id="cM" type="number" value="0"></label><label><span data-k="pr"></span><input id="cP" type="number" value="3"></label><label><span data-k="sc"></span><input id="cS" type="number" value="15"></label><label><span data-k="mi"></span><input id="cT" type="number" value="20"></label><label><span data-k="ra"></span><input id="cR" type="number" value="30"></label><label><span data-k="qy"></span><input id="cQ" type="number" value="1" min="1"></label></div><button class="ex" id="cG" data-k="gm"></button><div id="cO" style="font-size:12.5px;margin:6px 0"></div>';
+$('asm').after(p);
+const tb=document.createElement('button');tb.dataset.t='eng';tb.onclick=()=>tab('eng');document.querySelector('.tabs').appendChild(tb);
+function tolUI(){const D=+$('tD').value;if(!(D>=1&&D<=500)){$('tO').textContent='1 ≤ Ø ≤ 500';return}const f=$('tF').value,r=tol(D,f),jx=r.ES-r.ei,jn=r.EI-r.es,ty=jn>=0?'tc':jx<=0?'ti':'tt';
+ $('tO').innerHTML='<b>'+t(ty)+'</b><br>'+t('ho')+' '+f.split('/')[0]+f.split('/')[0].slice(1)+' : +'+r.ES+' / 0 µm<br>'+t('sh')+' '+f.split('/')[1]+' : '+(r.es>=0?'+':'')+r.es+' / '+(r.ei>=0?'+':'')+r.ei+' µm<br>'+(jn>=0?t('jx')+' = '+jx+' µm<br>'+t('jn')+' = '+jn+' µm':jx<=0?t('sx')+' = '+(-jn)+' µm<br>'+t('jn')+' = '+(-jx)+' µm':t('jx')+' = '+jx+' µm<br>'+t('sx')+' = '+(-jn)+' µm')}
+function crank(th,o){const r=o.r,l=o.l;if(l<=r)return null;const s=Math.sqrt(l*l-r*r*Math.sin(th)**2),c=Math.cos(th),sn=Math.sin(th);
+ return{x:r*c+s,v:o.w*(-r*sn-r*r*sn*c/s),a:o.w*o.w*(-r*c-r*r*Math.cos(2*th)/s-Math.pow(r,4)*sn*sn*c*c/(s*s*s))}}
+function fbar(th,o){const A=[o.r*Math.cos(th),o.r*Math.sin(th)],O=[o.g,0],dx=O[0]-A[0],dy=O[1]-A[1],dd=Math.hypot(dx,dy);if(dd>o.c+o.d||dd<Math.abs(o.c-o.d)||dd===0)return null;
+ const a=(o.c*o.c-o.d*o.d+dd*dd)/(2*dd),h=Math.sqrt(Math.max(0,o.c*o.c-a*a)),B=[A[0]+a*dx/dd+h*dy/dd,A[1]+a*dy/dd-h*dx/dd];return{A,B,O,q:Math.atan2(B[1]-O[1],B[0]-O[0])}}
+const gv=()=>({m:$('kM').value,r:+$('kR').value,l:+$('kL').value,g:+$('kG').value,c:+$('kC').value,d:+$('kD').value,w:(+$('kW').value||0)*Math.PI/30});
+function stat(o){let vm=0,am=0,ok=true;for(let i=0;i<360;i++){const th=i*Math.PI/180;if(o.m==='cs'){const k=crank(th,o);if(!k){ok=false;break}vm=Math.max(vm,Math.abs(k.v));am=Math.max(am,Math.abs(k.a))}else{const e=1e-3,a=fbar(th-e,o),b=fbar(th,o),c=fbar(th+e,o);if(!a||!b||!c){ok=false;continue}let d1=c.q-a.q,d2=c.q-2*b.q+a.q;if(d1>Math.PI)d1-=2*Math.PI;if(d1<-Math.PI)d1+=2*Math.PI;vm=Math.max(vm,Math.abs(d1/(2*e)*o.w));am=Math.max(am,Math.abs(d2/(e*e)*o.w*o.w))}}return{vm,am,ok}}
+let T0=0,run2=false;
+function draw(){const o=gv(),cv=$('kc'),x=cv.getContext('2d'),W=cv.width,H=cv.height,th=T0;x.clearRect(0,0,W,H);x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--bl')||'#2563eb';x.fillStyle=x.strokeStyle;x.lineWidth=3;x.font='11px sans-serif';
+ const S=o.m==='cs'?(W-60)/(2*(o.r+o.l)+1):(W-60)/(o.g+o.r+o.c+1),ox=o.m==='cs'?30+(o.r+o.l)*S*.0+o.r*S+10:40,oy=H/2;const P=(a,b)=>[ox+a*S,oy-b*S];
+ const line=(a,b)=>{x.beginPath();x.moveTo(...a);x.lineTo(...b);x.stroke()},dot=a=>{x.beginPath();x.arc(a[0],a[1],4,0,7);x.fill()};let txt='';
+ if(o.m==='cs'){const k=crank(th,o);if(!k){$('kO').textContent=t('bad');return}const A=P(o.r*Math.cos(th),o.r*Math.sin(th)),B=P(k.x,0);line(P(0,0),A);line(A,B);x.strokeRect(B[0]-12,B[1]-9,24,18);dot(P(0,0));dot(A);txt=t('po')+' = '+fx(k.x)+' mm · '+t('ve')+' = '+fx(k.v/1000,3)+' m/s · '+t('ac')+' = '+fx(k.a/1000,2)+' m/s²'}
+ else{const f=fbar(th,o);if(!f){$('kO').textContent=t('bad');return}const s=[o.r,o.c,o.d,o.g].sort((a,b)=>a-b),gr=s[0]+s[3]<=s[1]+s[2],A=P(...f.A),B=P(...f.B),O=P(o.g,0);line(P(0,0),A);line(A,B);line(B,O);x.globalAlpha=.4;line(P(0,0),O);x.globalAlpha=1;[P(0,0),A,B,O].forEach(dot);const e=1e-3,a=fbar(th-e,o),c=fbar(th+e,o),b=f;let d1=c&&a?c.q-a.q:0;if(d1>Math.PI)d1-=2*Math.PI;if(d1<-Math.PI)d1+=2*Math.PI;txt=t('po')+' = '+fx(f.q*180/Math.PI)+'° · ω4 = '+fx(d1/(2*e)*o.w,2)+' rad/s<br>'+(gr?t('gr'):t('ng'))}
+ const st=stat(o);$('kO').innerHTML=txt+'<br><i>'+t('mx')+' : v = '+fx(st.vm/(o.m==='cs'?1000:1),o.m==='cs'?3:2)+(o.m==='cs'?' m/s':' rad/s')+' · a = '+fx(st.am/(o.m==='cs'?1000:1),2)+(o.m==='cs'?' m/s²':' rad/s²')+'</i>'}
+function loop(ts){if(!run2)return;const o=gv();T0+=(o.w||1)*(1/60);draw();requestAnimationFrame(loop)}
+$('kB').onclick=()=>{run2=!run2;if(run2)requestAnimationFrame(loop);setBtn()};
+const setBtn=()=>{$('kB').textContent=t(run2?'ps':'pl')};
+function costUI(){const m=+$('cM').value||0,pr=+$('cP').value||0,sc=+$('cS').value||0,mi=+$('cT').value||0,ra=+$('cR').value||0,q=Math.max(1,+$('cQ').value||1),cm=m/1000*pr*(1+sc/100),cu=mi/60*ra,cp=cm+cu;$('cO').innerHTML=t('cm')+' : '+fx(cm,2)+'<br>'+t('cu')+' : '+fx(cu,2)+'<br><b>'+t('cp')+' : '+fx(cp,2)+'</b><br>'+t('ct')+' (×'+q+') : <b>'+fx(cp*q,2)+'</b>'}
+$('cG').onclick=()=>{try{updAna();$('cM').value=fx(BOMD.totalMass,1)}catch(e){}costUI()};
+function tr(){document.querySelectorAll('#eng [data-k]').forEach(e=>e.textContent=t(e.dataset.k));tb.textContent=t('tab');setBtn();tolUI();draw();costUI()}
+document.querySelectorAll('#tD,#tF').forEach(e=>e.oninput=tolUI);document.querySelectorAll('#kM,#kW,#kR,#kL,#kG,#kC,#kD').forEach(e=>e.oninput=()=>{if(!run2)draw();else{}});document.querySelectorAll('#cM,#cP,#cS,#cT,#cR,#cQ').forEach(e=>e.oninput=costUI);
+$('lg').addEventListener('change',()=>setTimeout(tr,0));tr();
+document.querySelectorAll('.tabs button').forEach(b=>{if(b!==tb)b.addEventListener('click',()=>{run2=false;setBtn()})});
+})();
+
+/*PID*/
+(()=>{
+const X={h:'Moteur à courant continu + PID|DC motor + PID|محرك تيار مستمر + PID',sp:'Consigne (rad/s)|Setpoint (rad/s)|السرعة المطلوبة (rad/s)',kp:'Kp (V par rad/s)|Kp (V per rad/s)|Kp (فولت لكل rad/s)',ki:'Ki|Ki|Ki',kd:'Kd|Kd|Kd',vm:'Tension max (V)|Max voltage (V)|أقصى جهد (V)',tl:'Couple de charge (N·m)|Load torque (N·m)|عزم الحمل (N·m)',tt:'Instant de la charge (s)|Load applied at (s)|لحظة تطبيق الحمل (s)',R:'R (Ω)|R (Ω)|R (Ω)',L:'L (H)|L (H)|L (H)',kt:'Kt = Ke (N·m/A)|Kt = Ke (N·m/A)|Kt = Ke (N·m/A)',J:'J (kg·m²)|J (kg·m²)|J (kg·م²)',b:'Frottement b (N·m·s)|Friction b (N·m·s)|الاحتكاك b (N·m·s)',go:'Simuler|Simulate|محاكاة',os:'Dépassement|Overshoot|التجاوز',tr:'Temps de montée|Rise time|زمن الصعود',ts:'Temps d’établissement (2 %)|Settling time (2%)|زمن الاستقرار (2%)',ee:'Erreur statique|Steady-state error|الخطأ الدائم',dr:'Chute de vitesse sous charge|Speed drop under load|هبوط السرعة تحت الحمل',nt:'Modèle linéaire (circuit RL + équation mécanique), intégrale avec anti-saturation. Courbe bleue : vitesse ; pointillés : consigne.|Linear model (RL circuit + mechanical equation), integrator with anti-windup. Blue: speed; dashed: setpoint.|نموذج خطي (دارة RL + معادلة ميكانيكية) مع تكامل مانع للتشبع. الأزرق: السرعة؛ المتقطع: القيمة المطلوبة.',ns:'Instable ou non défini : vérifie les paramètres.|Unstable or undefined: check parameters.|غير مستقر أو غير معرّف: تحقق من المعاملات.'};
+const LG=()=>$('lg').value,ix={fr:0,en:1,ar:2},t=k=>X[k].split('|')[ix[LG()]]||X[k].split('|')[0];
+const F=[['sp',100],['kp',.5],['ki',2],['kd',0],['vm',12],['tl',.05],['tt',1.2],['R',1],['L',.005],['kt',.05],['J',.0005],['b',.0001]];
+const d=document.createElement('div');d.id='pidbox';
+d.innerHTML='<h4 data-k="h"></h4><div class="cg">'+F.map(f=>'<label><span data-k="'+f[0]+'"></span><input id="d_'+f[0]+'" type="number" step="any" value="'+f[1]+'"></label>').join('')+'</div><canvas id="dc" width="320" height="170" style="width:100%;max-width:340px;border:1px solid var(--bd);border-radius:8px;background:var(--sf)"></canvas><div id="do" style="font-size:12.5px;margin:6px 0"></div><button class="ex go" id="dgo" data-k="go"></button><p class="hint" data-k="nt"></p>';
+$('eng').appendChild(d);
+const v=k=>+$('d_'+k).value;
+function sim(){const sp=v('sp'),kp=v('kp'),ki=v('ki'),kd=v('kd'),vm=Math.abs(v('vm')),TL=v('tl'),tt=v('tt'),R=v('R'),L=v('L'),K=v('kt'),J=v('J'),b=v('b'),T=2.5,h=1e-4,N=Math.round(T/h);
+ if(!(R>0&&L>0&&J>0&&vm>0))return null;let w=0,i=0,I=0,ep=sp,u=0,ud=0;const W=new Float32Array(N/10|0),U=new Float32Array(N/10|0);
+ for(let n=0;n<N;n++){const tm=n*h;if(n%10===0){const e=sp-w,D=kd*(e-ep)/(10*h);ep=e;let raw=kp*e+I+D;u=Math.max(-vm,Math.min(vm,raw));if(raw===u||(raw>vm&&e<0)||(raw<-vm&&e>0))I+=ki*e*10*h;const j=n/10|0;if(j<W.length){W[j]=w;U[j]=u}}
+  const dw=(K*i-b*w-(tm>=tt?TL:0))/J,di=(u-R*i-K*w)/L;w+=dw*h;i+=di*h;if(!isFinite(w))return null}
+ return{W,U,sp,tt,T,vm,dt:10*h}}
+function metrics(r){const{W,sp,tt,dt}=r,n=W.length,it=Math.floor(tt/dt),pre=W.slice(0,it);let mx=0,t10=null,t90=null,ts=0;for(let j=0;j<it;j++){if(W[j]>mx)mx=W[j];if(t10===null&&W[j]>=.1*sp)t10=j*dt;if(t90===null&&W[j]>=.9*sp)t90=j*dt;if(Math.abs(W[j]-sp)>.02*Math.abs(sp))ts=j*dt}
+ const ss=W[it-1],mn=Math.min(...W.slice(it));return{os:Math.max(0,(mx-sp)/sp*100),tr:t10!==null&&t90!==null?t90-t10:null,ts:ts,ee:sp-ss,dr:ss-mn}}
+function draw(){const r=sim(),c=$('dc'),x=c.getContext('2d'),Wd=c.width,H=c.height;x.clearRect(0,0,Wd,H);if(!r){$('do').textContent=t('ns');return}
+ const m=metrics(r),n=r.W.length,top=Math.max(r.sp*1.3,Math.max(...r.W)*1.05)||1,X0=34,Y0=H-18,pw=Wd-X0-8,ph=Y0-8,col=getComputedStyle(document.documentElement).getPropertyValue('--bl')||'#2563eb',ink=getComputedStyle(document.documentElement).getPropertyValue('--mut')||'#888';
+ const px=j=>X0+j/n*pw,py=y=>Y0-y/top*ph;x.strokeStyle=ink;x.fillStyle=ink;x.lineWidth=1;x.font='10px sans-serif';x.beginPath();x.moveTo(X0,8);x.lineTo(X0,Y0);x.lineTo(Wd-8,Y0);x.stroke();
+ for(let k=0;k<=4;k++){const y=top*k/4;x.fillText(Math.round(y),2,py(y)+3)}for(let k=0;k<=5;k++){x.fillText((r.T*k/5).toFixed(1)+'s',px(n*k/5)-8,H-4)}
+ x.setLineDash([4,3]);x.beginPath();x.moveTo(X0,py(r.sp));x.lineTo(Wd-8,py(r.sp));x.stroke();x.beginPath();const lx=px(r.tt/r.dt);x.moveTo(lx,8);x.lineTo(lx,Y0);x.stroke();x.setLineDash([]);
+ x.strokeStyle=col;x.lineWidth=2;x.beginPath();for(let j=0;j<n;j+=2){j?x.lineTo(px(j),py(r.W[j])):x.moveTo(px(j),py(r.W[j]))}x.stroke();
+ const f=(a,s)=>a===null?'—':a.toFixed(s);$('do').innerHTML=t('os')+' : <b>'+f(m.os,1)+' %</b><br>'+t('tr')+' : <b>'+f(m.tr,3)+' s</b><br>'+t('ts')+' : <b>'+f(m.ts,3)+' s</b><br>'+t('ee')+' : <b>'+f(m.ee,2)+' rad/s</b><br>'+t('dr')+' : <b>'+f(m.dr,2)+' rad/s</b>'}
+function tr(){d.querySelectorAll('[data-k]').forEach(e=>e.textContent=t(e.dataset.k));draw()}
+$('dgo').onclick=draw;d.querySelectorAll('input').forEach(e=>e.onchange=draw);$('lg').addEventListener('change',()=>setTimeout(tr,0));tr();
+})();
+
+/*PIDSPR*/
+(()=>{
+const IDX={fr:0,en:1,ar:2},X={hs:'Ressort de compression|Compression spring|نابض ضغط',d:'Fil d (mm)|Wire d (mm)|قطر السلك d (مم)',D:'Ø moyen D (mm)|Mean Ø D (mm)|القطر المتوسط D (مم)',n:'Spires actives n|Active coils n|اللفات الفعّالة n',L0:'Longueur libre L0 (mm)|Free length L0 (mm)|الطول الحر L0 (مم)',F:'Effort F (N)|Force F (N)|القوة F (N)',G:'Module G (MPa)|Shear modulus G (MPa)|معامل القص G (MPa)',ta:'τ admissible (MPa)|Allowable τ (MPa)|τ المسموح (MPa)',k:'Raideur k|Stiffness k|الصلابة k',x:'Flèche|Deflection|الانضغاط',tau:'Contrainte τ (Wahl)|Stress τ (Wahl)|الإجهاد τ (وال)',ls:'Longueur bloquée|Solid length|الطول المصمت',sf:'Coefficient de sécurité|Safety factor|معامل الأمان',pt:'Pas|Pitch|الخطوة',ok:'OK',ko:'Insuffisant|Insufficient|غير كافٍ',bad:'Données invalides|Invalid data|بيانات غير صالحة',ins:'Insérer le ressort 3D|Insert 3D spring|إدراج النابض ثلاثي الأبعاد',hp:'Moteur CC + régulateur PID|DC motor + PID controller|محرك تيار مستمر + مُنظِّم PID',kp:'Kp|Kp|Kp',ki:'Ki|Ki|Ki',kd:'Kd|Kd|Kd',w:'Consigne ω (rad/s)|Setpoint ω (rad/s)|القيمة المرجعية ω (rad/s)',vm:'Tension max (V)|Max voltage (V)|أقصى جهد (V)',R:'Résistance R (Ω)|Resistance R (Ω)|المقاومة R (Ω)',Kt:'Constante Kt (N·m/A)|Constant Kt (N·m/A)|الثابت Kt (N·m/A)',J:'Inertie J (kg·m²)|Inertia J (kg·m²)|عزم العطالة J (kg·m²)',tl:'Couple de charge à t=0,5 s (N·m)|Load torque at t=0.5 s (N·m)|عزم الحمل عند t=0,5 s (N·m)',sim:'▶ Simuler|▶ Simulate|▶ محاكاة',os:'Dépassement|Overshoot|التجاوز',tr:'Temps de montée|Rise time|زمن الصعود',ts:'Temps d’établissement (2 %)|Settling time (2%)|زمن الاستقرار (2%)',ess:'Erreur statique|Steady-state error|الخطأ الدائم',ns:'non atteint|not reached|لم يُبلغ',nt:'Modèle simplifié : moteur CC à aimants, frottement visqueux négligé, intégration d’Euler.|Simplified model: PM DC motor, negligible viscous friction, Euler integration.|نموذج مبسّط: محرك تيار مستمر بمغناطيس دائم، احتكاك لزج مهمل، تكامل أويلر.'};
+const L=()=>$('lg').value,t=k=>X[k].split('|')[IDX[L()]]||X[k].split('|')[0],f=(v,n=2)=>(+v).toFixed(n);
+const inp=(id,v,k)=>'<label><span data-k2="'+k+'"></span><input id="'+id+'" type="number" value="'+v+'" step="any"></label>';
+const b=document.createElement('div');
+b.innerHTML='<h4 data-k2="hs"></h4><div class="cg">'+inp('sd',3,'d')+inp('sD',20,'D')+inp('sn',8,'n')+inp('sL',50,'L0')+inp('sF',100,'F')+inp('sG',79300,'G')+inp('sT',600,'ta')+'</div><div id="sO" style="font-size:12.5px;margin:6px 0"></div><button class="ex go" id="sI" data-k2="ins"></button>'
++'<h4 data-k2="hp"></h4><div class="cg">'+inp('pP',2,'kp')+inp('pI',20,'ki')+inp('pD',0,'kd')+inp('pW',100,'w')+inp('pV',12,'vm')+inp('pR',1,'R')+inp('pK',.05,'Kt')+inp('pJ',.001,'J')+inp('pT',0,'tl')+'</div><canvas id="pc" width="320" height="170" style="width:100%;max-width:340px;border:1px solid var(--bd);border-radius:8px;background:var(--sf)"></canvas><div id="pO" style="font-size:12.5px;margin:6px 0"></div><button class="ex go" id="pB" data-k2="sim"></button><p class="hint" data-k2="nt"></p>';
+$('eng').appendChild(b);
+function spr(){const d=+$('sd').value,D=+$('sD').value,n=+$('sn').value,L0=+$('sL').value,F=+$('sF').value,G=+$('sG').value,ta=+$('sT').value;if(!(d>0&&D>d&&n>0&&F>=0&&G>0)){$('sO').textContent=t('bad');return null}
+ const k=G*d**4/(8*D**3*n),C=D/d,K=(4*C-1)/(4*C-4)+.615/C,x=F/k,tau=K*8*F*D/(Math.PI*d**3),Ls=(n+2)*d,p=(L0-2*d)/n,sf=ta/(tau||1e-9),ok=sf>=1&&x<=L0-Ls;
+ $('sO').innerHTML=t('k')+' = <b>'+f(k)+'</b> N/mm<br>'+t('x')+' = '+f(x)+' mm<br>'+t('tau')+' = '+f(tau,1)+' MPa (C = '+f(C,1)+')<br>'+t('ls')+' = '+f(Ls,1)+' mm · '+t('pt')+' = '+f(p,2)+' mm<br>'+t('sf')+' = <b>'+f(sf)+'</b> — '+(ok?t('ok'):t('ko'));return{d,D,n,p}}
+$('sI').onclick=()=>{const s=spr();if(!s)return;code.value='// ressort : d='+s.d+' D='+s.D+' n='+s.n+' pas='+f(s.p)+'\nreturn balayage(circle({radius:'+s.d/2+'}), helice('+s.D/2+','+f(s.p)+','+s.n+'))';run(true)};
+function sim(){const g=i=>+$(i).value,Kp=g('pP'),Ki=g('pI'),Kd=g('pD'),W=g('pW'),Vm=g('pV'),R=g('pR'),Kt=g('pK'),J=g('pJ'),TL=g('pT'),Lh=.005,bf=1e-4,dt=1e-4,N=10000;
+ if(!(R>0&&Kt>0&&J>0&&Vm>0)){$('pO').textContent=t('bad');return}
+ let w=0,i=0,I=0,pm=0,Y=[];for(let s=0;s<N;s++){const e=W-w;I=Math.max(-Vm,Math.min(Vm,I+Ki*e*dt));const dm=(w-pm)/dt;pm=w;let V=Kp*e+I-Kd*dm;V=Math.max(-Vm,Math.min(Vm,V));
+  const T=s*dt>=.5?TL:0;i+=dt*(V-R*i-Kt*w)/Lh;w+=dt*(Kt*i-bf*w-T)/J;if(s%20==0)Y.push(w);if(!isFinite(w)){$('pO').textContent=t('bad');return}}
+ const cv=$('pc'),c=cv.getContext('2d'),Wd=cv.width,H=cv.height,mx=Math.max(W*1.3,...Y,1),X0=34,sx=i=>X0+(Wd-X0-8)*i/(Y.length-1),sy=v=>H-18-(H-30)*v/mx,col=getComputedStyle(document.documentElement).getPropertyValue('--bl')||'#2563eb',ink=getComputedStyle(document.documentElement).getPropertyValue('--mut')||'#888';
+ c.clearRect(0,0,Wd,H);c.strokeStyle=ink;c.fillStyle=ink;c.lineWidth=1;c.font='10px sans-serif';c.beginPath();c.moveTo(X0,8);c.lineTo(X0,H-18);c.lineTo(Wd-8,H-18);c.stroke();c.fillText('ω',6,14);c.fillText('t (1 s)',Wd-48,H-4);c.fillText(f(mx,0),4,22);c.setLineDash([4,3]);c.beginPath();c.moveTo(X0,sy(W));c.lineTo(Wd-8,sy(W));c.stroke();c.setLineDash([]);
+ c.strokeStyle=col;c.lineWidth=2;c.beginPath();Y.forEach((v,j)=>j?c.lineTo(sx(j),sy(v)):c.moveTo(sx(j),sy(v)));c.stroke();
+ const dtp=dt*20,pk=Math.max(...Y.slice(0,Y.length/2)),t10=Y.findIndex(v=>v>=.1*W),t90=Y.findIndex(v=>v>=.9*W),half=Math.floor(Y.length/2*.98);let ts=-1;for(let j=half;j>=0;j--)if(Math.abs(Y[j]-W)>.02*Math.abs(W)){ts=j+1;break}if(ts===-1)ts=0;
+ $('pO').innerHTML=t('os')+' = '+f(Math.max(0,(pk-W)/W*100),1)+' %<br>'+t('tr')+' = '+(t90<0?t('ns'):f((t90-t10)*dtp*1000,0)+' ms')+'<br>'+t('ts')+' = '+(ts>=half?t('ns'):f(ts*dtp*1000,0)+' ms')+'<br>'+t('ess')+' = '+f(W-Y[half],2)+' rad/s'}
+$('pB').onclick=sim;document.querySelectorAll('#sd,#sD,#sn,#sL,#sF,#sG,#sT').forEach(e=>e.oninput=spr);
+function tr(){b.querySelectorAll('[data-k2]').forEach(e=>e.textContent=t(e.dataset.k2));spr();sim()}
+$('lg').addEventListener('change',()=>setTimeout(tr,5));tr();
+})();
+
+/*NEW6*/
 /* --- Couleur d’accent : pièces 3D --- */
 document.addEventListener('accent',e=>{const c=e.detail.c,hx=a=>(a[0]<<16)|(a[1]<<8)|a[2],mx=(t,w)=>c.map(v=>Math.round(v+(w-v)*t));
  PAL[0]=hx(c);PAL[1]=hx(mx(.35,255));PAL[2]=hx(mx(.3,0));PAL[3]=0x9aa1ab;PAL[4]=hx(mx(.6,255));
@@ -1015,6 +1316,148 @@ if(location.hash==='#atelier'){L.style.display='none'}
 const st=document.getElementById('step');if(st){st.textContent='⤓ STEP (facettes)';st.title='STEP en facettes (maillage). Pour un vrai B-rep éditable : onglet Python (CadQuery).'}
 })();
 
+/*I18N*/
+(()=>{const M={};`Ouvrir l’atelier|Open the workshop|افتح الورشة
+Passer|Skip|تخطَّ
+La CAO|CAD|التصميم
+par le code|by code|بالكود
+directement dans ton navigateur.|right in your browser.|مباشرة من المتصفح.
+Voir les pièces|See the parts|شاهد القطع
+Couleur du site|Site colour|لون الموقع
+Modèle 3D|3D model|نموذج ثلاثي الأبعاد
+Paramètres|Parameters|المعاملات
+Vérification|Check|التحقق
+Dessin technique|Technical drawing|الرسم التقني
+Assistant|Assistant|المساعد
+Paramétrique|Parametric|وسيطي
+Nomenclature|Bill of materials|جدول القطع
+Versions|Versions|الإصدارات
+Vérifier|Check|تحقق
+Params|Params|المعاملات
+Pièces|Parts|القطع
+Analyse|Analysis|التحليل
+Assemblage|Assembly|التجميع
+Calculs|Calculations|الحسابات
+Au clic sur un exemple :|On clicking an example:|عند النقر على مثال:
+Remplacer mon code|Replace my code|استبدال الكود
+Ajouter (corps séparés)|Add (separate bodies)|إضافة (أجسام منفصلة)
+Ajouter et fusionner|Add and merge|إضافة ودمج
+Ajouter et soustraire|Add and subtract|إضافة وطرح
+Ajouter et intersecter|Add and intersect|إضافة وتقاطع
+Combiner avec mon code|Combine with my code|دمج مع الكود
+Matériau et masse|Material and mass|المادة والكتلة
+Vérifier la conception|Check the design|تحقق من التصميم
+Exporter la nomenclature (CSV)|Export bill of materials (CSV)|تصدير جدول القطع (CSV)
+Enregistrer|Save|حفظ
+Calculs d’ingénieur|Engineering calculations|حسابات هندسية
+Matériau|Material|المادة
+Section|Section|المقطع
+Longueur L (mm)|Length L (mm)|الطول L (مم)
+Effort F (N)|Force F (N)|القوة F (N)
+Charge q (N/mm)|Load q (N/mm)|الحمل q (N/mm)
+Couple T (N·m)|Torque T (N·m)|العزم T (N·m)
+Flexion|Bending|الانعطاف
+Flambement (appuis)|Buckling (supports)|الانبعاج (المساند)
+Lire les dimensions du modèle|Read model dimensions|قراءة أبعاد النموذج
+Vue éclatée|Exploded view|منظر مفكك
+Vérifier les interférences|Check interferences|فحص التداخلات
+Effacer le marquage|Clear marking|مسح العلامات
+Contraintes (aide)|Constraints (help)|القيود (مساعدة)
+Charger un exemple d’assemblage|Load an assembly example|تحميل مثال تجميع
+Aucune|None|بدون
+Coupe|Cut|مقطع
+Fond|Background|الخلفية
+Tranches|Slices|شرائح
+Déplacer|Move|تحريك
+Historique|History|السجل
+Couche|Layer|طبقة
+Hauteur|Height|الارتفاع
+Lecture|Play|تشغيل
+Isométrique|Isometric|إيزومتري
+Face|Front|أمامي
+Dessus|Top|علوي
+Droite|Right|يمين
+Pièce|Part|القطعة
+Qté|Qty|الكمية
+Masse|Mass|الكتلة
+Volume|Volume|الحجم
+Hors-tout|Overall size|الأبعاد الكلية
+Aucune pièce.|No part.|لا توجد قطعة.
+Engrenage droit (développante)|Spur gear (involute)|ترس مستقيم (إيفولوت)
+Visserie et roulements ISO|ISO fasteners and bearings|براغي ورولمانات ISO
+Insérer la pièce|Insert the part|إدراج القطعة
+Générer la pièce|Generate the part|توليد القطعة
+Pièce1 · CAO par le code|Part1 · CAD by code|قطعة1 · تصميم بالكود
+Exemples (50)|Examples (50)|أمثلة (50)
+Dimensions (mm)|Dimensions (mm)|الأبعاد (مم)
+Masse (g)|Mass (g)|الكتلة (غ)
+Matériau|Material|المادة`.split('\n').forEach(l=>{const a=l.split('|');M[a[0]]=a});
+`CAO · code · paramétrique|CAD · code · parametric|تصميم · كود · وسيطي
+Écris « plaque 100×60×10 avec 4 trous », le code est généré.|Type “plate 100×60×10 with 4 holes” and the code is generated.|اكتب «لوحة 100×60×10 بـ 4 ثقوب» ويُولَّد الكود.
+Longueur, diamètre, nombre de trous : des curseurs, résultat en direct.|Length, diameter, number of holes: sliders, live result.|الطول، القطر، عدد الثقوب: منزلقات ونتيجة مباشرة.
+3 vues cotées avec arêtes cachées, cartouche, export SVG et PDF.|3 dimensioned views with hidden edges, title block, SVG and PDF export.|3 مناظر مقيّسة بحواف مخفية، كارتوش، تصدير SVG وPDF.
+Surface fermée, parois fines, chevauchements, masse selon le matériau.|Closed surface, thin walls, overlaps, mass by material.|سطح مغلق، جدران رقيقة، تداخلات، الكتلة حسب المادة.
+Liste des pièces, quantités, matériau et masse, export CSV.|Parts list, quantities, material and mass, CSV export.|قائمة القطع والكميات والمادة والكتلة، تصدير CSV.
+Enregistre des étapes avec aperçu et restaure-les en un clic.|Save steps with preview and restore them in one click.|احفظ مراحل مع معاينة واستعدها بنقرة.
+Combiner avec un autre programme|Combine with another program|دمج مع برنامج آخر
+Écris du code, termine par|Write code, end with|اكتب كودًا، وأنهِه بـ
+suivi de la pièce. Unité : mm, axe Z vers le haut.|followed by the part. Unit: mm, Z axis up.|متبوعًا بالقطعة. الوحدة: مم، المحور Z للأعلى.
+Plusieurs pièces dans une seule interface|Several parts in one interface|عدة قطع في واجهة واحدة
+Équivalences SolidWorks|SolidWorks equivalents|المقابلات في SolidWorks
+Esquisse :|Sketch:|رسم:
+Bossage extrudé :|Extruded boss:|بروز بالبثق:
+Révolution :|Revolve:|دوران:
+Enlèvement de matière, perçage :|Cut, drilling:|إزالة مادة، ثقب:
+Fusion :|Union:|دمج:
+· Intersection :|· Intersection:|· تقاطع:
+Congé simple :|Simple fillet:|تدوير بسيط:
+Texte 3D :|3D text:|نص ثلاثي الأبعاد:
+Coque : soustraire une forme plus petite|Shell: subtract a smaller shape|قشرة: اطرح شكلًا أصغر
+Symétrie :|Mirror:|تناظر:
+Déplacer, tourner :|Move, rotate:|تحريك، تدوير:
+Enveloppe :|Hull:|غلاف:
+· Couleur :|· Colour:|· اللون:
+Formes 3D :|3D shapes:|أشكال ثلاثية الأبعاد:
+Réseau :|Pattern:|مصفوفة:
+Rectangle b × h|Rectangle b × h|مستطيل b × h
+Disque Ø|Disc Ø|قرص Ø
+Tube Ø ext / Ø int|Tube Ø out / Ø in|أنبوب Ø خارجي / داخلي
+b ou Ø ext (mm)|b or outer Ø (mm)|b أو Ø خارجي (مم)
+h ou Ø int (mm)|h or inner Ø (mm)|h أو Ø داخلي (مم)
+Console, F au bout|Cantilever, end load F|كابولي، قوة F في الطرف
+Console, q répartie|Cantilever, distributed q|كابولي، حمل موزع q
+Appuis simples, F au centre|Simply supported, central F|مسندان بسيطان، F في المنتصف
+Appuis simples, q répartie|Simply supported, distributed q|مسندان بسيطان، حمل موزع q
+Encastrée-encastrée, F au centre|Fixed-fixed, central F|مثبتة-مثبتة، F في المنتصف
+Articulé-articulé (K=1)|Pinned-pinned (K=1)|مفصلي-مفصلي (K=1)
+Encastré-libre (K=2)|Fixed-free (K=2)|مثبت-حر (K=2)
+Encastré-articulé (K=0,7)|Fixed-pinned (K=0.7)|مثبت-مفصلي (K=0,7)
+Encastré-encastré (K=0,5)|Fixed-fixed (K=0.5)|مثبت-مثبت (K=0,5)
+Nouvelles fonctions de forme|New shape functions|دوال أشكال جديدة
+transition entre deux esquisses 2D (cercle → carré…).|transition between two 2D sketches (circle → square…).|انتقال بين رسمين ثنائيي الأبعاد (دائرة ← مربع…).
+profil le long d’un chemin 3D|profile along a 3D path|مقطع على مسار ثلاثي الأبعاد
+seulement la copie.|copy only.|النسخة فقط.
+Python (CadQuery)|Python (CadQuery)|بايثون (CadQuery)
+⤓ Télécharger le .py|⤓ Download the .py|⤓ تنزيل ملف .py
+Copier|Copy|نسخ
+deviennent des réglages : bouge un curseur, la pièce change en direct.|become settings: move a slider and the part updates live.|تصبح إعدادات: حرّك المنزلق فتتغير القطعة مباشرة.
+Charger un modèle paramétrique (plaque)|Load a parametric model (plate)|تحميل نموذج وسيطي (لوحة)
+Les lignes|Lines like|الأسطر مثل
+Ouvrir|Open|فتح
+Importer .json|Import .json|استيراد .json
+Mesurer|Measure|قياس
+Grille|Grid|شبكة
+Sombre|Dark|داكن`.split('\n').forEach(l=>{const a=l.split('|');if(a.length==3)M[a[0]]=a});
+const ix={fr:0,en:1,ar:2},W=new WeakMap(),A=['placeholder','title'];let busy=false;
+const RE=/^([^\p{L}\p{N}]*)([\s\S]*?)(\s*)$/u;
+function tx(n,L){const o=W.has(n)?W.get(n):n.nodeValue,m=RE.exec(o);if(!m||!M[m[2]])return;if(!W.has(n))W.set(n,o);n.nodeValue=L===0?o:m[1]+M[m[2]][L]+m[3]}
+function at(e,L){if(!e.getAttribute)return;A.forEach(a=>{const v=e.getAttribute(a);if(!v)return;const k='_fr'+a,o=e[k]!==undefined?e[k]:v;if(M[o]){e[k]=o;e.setAttribute(a,M[o][L])}})}
+function go(root){const L=ix[document.getElementById('lg').value]||0;busy=true;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE|TEXTAREA|PRE|CODE|OPTION)$/.test(n.parentNode.nodeName)&&n.parentNode.nodeName!=='OPTION'?2:1});let n;while(n=w.nextNode())tx(n,L);root.querySelectorAll&&root.querySelectorAll('[placeholder],[title]').forEach(e=>at(e,L));busy=false}
+function all(){const l=document.getElementById('lg').value;document.documentElement.lang=l;document.body.classList.toggle('rtl',l==='ar');go(document.body)}
+const st=document.createElement('style');st.textContent='.rtl .pane,.rtl .tools,.rtl .rib,.rtl .tabs,.rtl #land,.rtl .top .doc{direction:rtl}.rtl .pane pre,.rtl .pane code,.rtl textarea{direction:ltr;text-align:left}';document.head.appendChild(st);
+document.getElementById('lg').addEventListener('change',()=>setTimeout(all,10));
+let q=0;new MutationObserver(()=>{if(busy||q)return;q=setTimeout(()=>{q=0;all()},60)}).observe(document.body,{childList:true,subtree:true,characterData:true});
+setTimeout(all,50)})();
 </script>
 </body>
 </html>

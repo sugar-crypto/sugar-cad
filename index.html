@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="dark">
+<html lang="fr" data-theme="light">
 <head>
 <meta charset="utf-8">
+<meta name="description" content="Sugar CAD : modélise des pièces 3D en écrivant du code. Paramétrique, dessin technique, nomenclature, export STL/OBJ/3MF/DXF/SVG/PDF. Gratuit, dans le navigateur.">
+<meta name="theme-color" content="#4f8cff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:title" content="Sugar CAD · CAO par le code">
+<meta property="og:description" content="Modélisation 3D paramétrique par le code, directement dans le navigateur.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f63c8'/%3E%3Cpath d='M32 12l18 10v20L32 52 14 42V22z' fill='none' stroke='white' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script>try{var __t=localStorage.getItem('sugar-theme');if(__t==='dark'||__t==='light')document.documentElement.setAttribute('data-theme',__t)}catch(e){}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>sugar · CAD par le code</title>
-<style>
+<noscript><style>#land{display:none}</style><p style="font:16px sans-serif;padding:24px">Sugar CAD a besoin de JavaScript pour fonctionner.</p></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style id="sugar-css">
+/* ===== Base ===== */
 *{box-sizing:border-box}
 :root{color-scheme:light;--bd:#cfd8e3;--bl:#2f6fb0;--bg2:#f3f6fa;--ink:#1f2a37;--mut:#5b6b7c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -33,13 +44,11 @@ textarea{width:100%;height:230px;border:0;padding:10px;background:#fbfcfe;color:
 .sw{width:10px;height:10px;border:1px solid #333;display:inline-block}
 code{background:#eef3f9;padding:0 5px;border-radius:3px;font:12.5px ui-monospace,Consolas,monospace}
 pre{background:#eef3f9;padding:8px;border-radius:4px;overflow-x:auto;font:12.5px ui-monospace,Consolas,monospace}
-html[data-theme=dark]{filter:invert(.92) hue-rotate(180deg)}html[data-theme=dark] canvas{filter:invert(1) hue-rotate(180deg)}
 .tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:4px 8px;border-bottom:1px solid var(--bd);background:#fff;font-size:12px}.tools button,.tools select,.tools input[type=text],.tools input:not([type]){border:1px solid var(--bd);background:#fff;border-radius:4px;padding:2px 8px;cursor:pointer;font:inherit;color:var(--ink)}.tools .on{background:#dce8f5;border-color:var(--bl)}.tools input[type=range]{width:90px}.tools input[type=color]{width:26px;height:20px;padding:0;border:1px solid var(--bd)}
 #ed textarea{background:transparent;font:13px/20px ui-monospace,Consolas,monospace;white-space:pre;overflow:auto;position:relative;display:block}
 @media(min-width:900px){.main{flex-direction:row-reverse;height:calc(100vh - 112px)}.left{width:300px;border-top:0;border-right:1px solid var(--bd);display:flex;flex-direction:column}.pane{max-height:none;flex:1}.right{flex:1;min-width:0}#view{flex:1;height:auto}textarea{height:230px}}
-</style>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style id="modern">
+
+/* ===== Couche moderne ===== */
 :root{--bd:#e3e8ef;--bl:#2563eb;--bg2:#f1f4f9;--ink:#0f1b2d;--mut:#64748b;--sf:#fff;--page:#f4f7fb;--soft:#e8f0fe;--tl:#0ea5a4;--sh:0 1px 2px rgba(15,27,45,.06),0 8px 24px rgba(15,27,45,.06);--vw:radial-gradient(120% 90% at 50% 0%,#fff 0%,#e9eff8 70%,#dfe7f3 100%);--ed:#fbfcfe;--ff:Inter,"Segoe UI",system-ui,Arial,sans-serif}
 html[data-theme=dark]{--bd:#243049;--bl:#6b95ff;--bg2:#16213a;--ink:#e6edf7;--mut:#8fa1ba;--sf:#111a2e;--page:#0a1020;--soft:#1b2a4e;--tl:#2dd4bf;--sh:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);--vw:radial-gradient(120% 90% at 50% 0%,#18233d 0%,#0f1830 70%,#0b1326 100%);--ed:#0d1527;filter:none;color-scheme:dark}
 html[data-theme=dark] canvas{filter:none}
@@ -88,8 +97,9 @@ details summary{cursor:pointer;color:var(--bl);font-weight:600}
 #hl i{font-style:normal}#hl .c{color:#7a8aa0}#hl .s{color:#0f8f8d}#hl .n{color:#7c3aed}#hl .k{color:var(--bl);font-weight:600}#hl .f{color:#0b6f9e}
 html[data-theme=dark] #hl .s{color:#5eead4}html[data-theme=dark] #hl .n{color:#b79cff}html[data-theme=dark] #hl .f{color:#7cc4ff}
 @media(min-width:900px){.main{height:calc(100vh - 172px);padding:14px}.left{width:320px}}
-</style>
-<style id="gray">:root{--acc:#4f8cff;--acc2:#2f63c8;--onacc:#fff;--bd:#d5d9df;--bg2:#eceef1;--ink:#15181d;--mut:#6a727d;--sf:#fff;--page:#eff0f2;--ed:#fafbfc;--bl:var(--acc);--tl:var(--acc2);--soft:#e8eefc;--soft:color-mix(in srgb,var(--acc) 14%,var(--sf));--vw:radial-gradient(120% 90% at 50% 0%,#fff 0%,#e6e8ec 70%,#d4d8de 100%);--sh:0 1px 2px rgba(20,24,30,.06),0 10px 30px rgba(20,24,30,.08)}
+
+/* ===== Palette neutre et composants ===== */
+:root{--acc:#4f8cff;--acc2:#2f63c8;--onacc:#fff;--bd:#d5d9df;--bg2:#eceef1;--ink:#15181d;--mut:#6a727d;--sf:#fff;--page:#eff0f2;--ed:#fafbfc;--bl:var(--acc);--tl:var(--acc2);--soft:#e8eefc;--soft:color-mix(in srgb,var(--acc) 14%,var(--sf));--vw:radial-gradient(120% 90% at 50% 0%,#fff 0%,#e6e8ec 70%,#d4d8de 100%);--sh:0 1px 2px rgba(20,24,30,.06),0 10px 30px rgba(20,24,30,.08)}
 html[data-theme=dark]{--bd:#2a2e35;--bg2:#1a1d22;--ink:#e9ebee;--mut:#9aa1ab;--sf:#121417;--page:#0a0b0d;--ed:#0e1013;--vw:radial-gradient(120% 90% at 50% 0%,#2a2e36 0%,#15171b 70%,#0b0c0e 100%);--sh:0 1px 2px rgba(0,0,0,.6),0 12px 34px rgba(0,0,0,.5)}
 body{background:var(--page)}
 .top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--sf) 82%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);overflow-x:auto;scrollbar-width:none}
@@ -153,6 +163,12 @@ html[data-theme=dark] #hl .s,html[data-theme=dark] #hl .n,html[data-theme=dark] 
 #land .fm{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}#land .fm span{border:1px solid #2a2e35;border-radius:999px;padding:5px 12px;font-size:12.5px;color:#9aa1ab;background:#14161a}#land .fm span.t{border-color:var(--acc);color:#e9ebee}
 #land .note{margin-top:22px;font-size:12.5px;color:#6a727d;max-width:720px}
 @media(max-width:600px){.top .doc{display:none}.sws button{width:15px;height:15px}}
+
+/* ===== Accessibilité et mentions ===== */
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+textarea:focus-visible{outline-offset:-2px}
+.legal{margin:0 14px 14px;padding:0 4px;color:var(--mut);font:12px/1.5 var(--ff);text-align:center}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 </style>
 
 <style id="fix-mobile">
@@ -194,7 +210,7 @@ return extrudeLinear({height:10}, subtract(base, trous))</div>
 </div>
 <div class="main">
 <aside class="left">
-<div class="tabs"><button data-t="tree" class="on">Arbre</button><button data-t="exl">Exemples (50)</button><button data-t="hp">Aide</button><button data-t="py">Python</button><button data-t="prm">Params</button><button data-t="ast">Assistant</button><button data-t="lib">Pièces</button><button data-t="ana">Analyse</button><button data-t="asm">Assemblage</button><button data-t="cal">Calculs</button></div>
+<div class="tabs"><button data-t="tree" class="on">Arbre</button><button data-t="exl">Exemples (58)</button><button data-t="hp">Aide</button><button data-t="py">Python</button><button data-t="prm">Params</button><button data-t="ast">Assistant</button><button data-t="lib">Pièces</button><button data-t="ana">Analyse</button><button data-t="asm">Assemblage</button><button data-t="cal">Calculs</button></div>
 <div class="pane" id="tree"></div>
 <div class="pane" id="exl" hidden>
 <label>Au clic sur un exemple : <select id="op"><option value="rep">Remplacer mon code</option><option value="asm">Ajouter (corps séparés)</option><option value="uni">Ajouter et fusionner</option><option value="sub">Ajouter et soustraire</option><option value="int">Ajouter et intersecter</option></select></label>
@@ -224,10 +240,10 @@ return extrudeLinear({height:10}, subtract(base, trous))</div>
 </div>
 <div class="pane" id="py" hidden><p><b>Python (CadQuery)</b> : un vrai noyau CAO (OpenCascade) avec congés et chanfreins sur arêtes choisies, vues 2D, assemblages avec contraintes et export STEP pour SolidWorks. Il ne tourne pas dans le navigateur : télécharge ce script et lance-le sur ton ordinateur (<code>pip install cadquery</code>) ou dans un notebook en ligne.</p><div class="rib" style="padding:4px 0;background:none;border:0"><button id="pydl">⤓ Télécharger le .py</button><button id="pycp">Copier</button></div><pre id="pyc"></pre></div>
 <div class="pane" id="prm" hidden><p class="hint">Les lignes <code>const L = 100 // @p Longueur</code> deviennent des réglages : bouge un curseur, la pièce change en direct.</p><div id="prl"></div><button class="ex go" id="prdemo">Charger un modèle paramétrique (plaque)</button></div>
-<div class="pane" id="ast" hidden><p class="hint">Décris ta pièce en FR, EN ou العربية. Assistant à règles, sans IA en ligne : il génère du code paramétrique que tu peux ensuite modifier.</p><textarea id="aq" placeholder="Décris ta pièce… ex : plaque 100×60×10 avec 4 trous" spellcheck="false"></textarea><button class="ex go" id="ag">Générer la pièce</button><div id="aex"></div><div id="ar2"></div></div>
+<div class="pane" id="ast" hidden><p class="hint">Décris ta pièce en FR, EN ou العربية. Assistant à règles, sans IA en ligne : il génère du code paramétrique que tu peux ensuite modifier.</p><textarea id="aq" placeholder="Décris ta pièce… ex : plaque 100×60×10 avec 4 trous" spellcheck="false"></textarea><button class="ex go" id="ag">Générer la pièce</button><div id="aex"></div><div id="ar2"></div><h4>Image → programme</h4><p class="hint">Charge une image (logo, silhouette, dessin au trait) : le site détecte les contours et génère le programme 3D, prêt à modifier.</p><label class="ex" for="imf" style="display:block;text-align:center;cursor:pointer">📷 Charger une image</label><input type="file" id="imf" accept="image/*" hidden><canvas id="imc" style="display:none;width:100%;max-height:220px;object-fit:contain;image-rendering:pixelated;border:1px solid var(--bd);border-radius:10px;margin:8px 0"></canvas><div class="pin"><span>Seuil</span><input type="range" id="imt" min="1" max="254" value="128"><label><input type="checkbox" id="imA" checked> Auto</label></div><div class="pin"><span>Détail</span><input type="range" id="imd" min="60" max="300" value="140"></div><div class="pin"><span>Lissage</span><input type="range" id="ims" min="0" max="30" value="10"></div><label class="pin"><input type="checkbox" id="imi"> Inverser (formes claires sur fond sombre)</label><button class="ex go" id="imgo" disabled>Générer le programme depuis l’image</button><p class="hint" id="imm"></p></div>
 <div class="pane" id="lib" hidden></div>
 <div class="pane" id="ana" hidden><h4>Matériau et masse</h4><select id="mat"></select><div id="mout"></div><h4>Vérification</h4><button class="ex go" id="chk2">✓ Vérifier la conception</button><div id="vout"></div><h4>Nomenclature</h4><div id="bout"></div><button class="ex" id="bcsv">⤓ Exporter la nomenclature (CSV)</button><h4>Versions</h4><div class="vrow"><input id="vn" placeholder="Nom de la version"><button id="vs">Enregistrer</button></div><div id="vl"></div></div>
-<div class="pane" id="cal" hidden><h4>Calculs d’ingénieur</h4>
+<div class="pane" id="cal" hidden><h4>Calculs d’ingénieur</h4><p class="hint">Résultats indicatifs : à vérifier avec une référence reconnue avant tout usage réel.</p>
 <p style="font-size:12px;color:var(--mut)">Formules analytiques sur poutre, arbre et colonne idéalisés, valeurs matériaux indicatives. Ce n’est pas un calcul par éléments finis : valide toujours avec les normes et un coefficient de sécurité adapté.</p>
 <div class="cg">
 <label>Matériau<select id="qm"></select></label>
@@ -256,7 +272,7 @@ return extrudeLinear({height:10}, subtract(base, trous))</div>
 <button class="ex" id="asd">Charger un exemple d’assemblage</button></div>
 </aside>
 <section class="right">
-<div class="tools"><button id="tm">Mesurer</button><button id="tg" class="on">Grille</button><label>Fond <input type="color" id="bgc" value="#14161a"></label><label>Coupe <select id="cx"><option value="">Aucune</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select> <input type="range" id="cs" min="0" max="100" value="50"></label><button id="si">Importer STL</button><input type="file" id="sf" accept=".stl" hidden><button id="di">Importer DXF</button><input type="file" id="df" accept=".dxf" hidden><button id="obj">⤓ OBJ</button><button id="mf">⤓ 3MF</button><button id="step">⤓ STEP</button><button id="svg">⤓ SVG</button><button id="dxf">⤓ DXF</button><button id="tt">Sombre</button><button id="sb">Tranches</button><button id="gm">Déplacer</button><button id="rl">⟲</button><button id="rr">⟳</button></div>
+<div class="tools"><button id="tm">Mesurer</button><button id="tg" class="on">Grille</button><label>Fond <input type="color" id="bgc" value="#14161a"></label><label>Coupe <select id="cx"><option value="">Aucune</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select> <input type="range" id="cs" min="0" max="100" value="50"></label><button id="si">Importer STL</button><input type="file" id="sf" accept=".stl" hidden><button id="di">Importer DXF</button><input type="file" id="df" accept=".dxf" hidden><button id="ii">Importer image</button><input type="file" id="imf2" accept="image/*" hidden><button id="obj">⤓ OBJ</button><button id="mf">⤓ 3MF</button><button id="step">⤓ STEP</button><button id="svg">⤓ SVG</button><button id="dxf">⤓ DXF</button><button id="tt">Sombre</button><button id="sb">Tranches</button><button id="gm">Déplacer</button><button id="rl">⟲</button><button id="rr">⟳</button></div>
 <div class="tools"><input id="pn" placeholder="Nom du projet" size="14"><button id="ps">Enregistrer</button><select id="pl"></select><button id="po">Ouvrir</button><button id="pj">⤓ .json</button><input type="file" id="pf" accept=".json" hidden><button id="pi">Importer .json</button></div>
 <div class="tools"><label>Historique <input type="range" id="hs" min="0" max="0" value="0"></label><span id="ht"></span></div>
 <div class="tools" id="slr" style="display:none"><label>Couche <input type="range" id="ls" min="1" max="100" value="100"></label><span id="lt"></span><label>Hauteur <input type="number" id="lh" value="1" step="0.1" min="0.05" style="width:64px"></label><button id="lp">▶ Lecture</button></div>
@@ -267,10 +283,14 @@ return extrudeLinear({height:10}, subtract(base, trous))</div>
 </div>
 <div id="dlg"><div class="dbox"><div class="dbar"><b>Dessin technique</b><span id="dsc"></span><button id="dsvg">⤓ SVG</button><button id="dpdf">⤓ PDF</button><button id="dx" aria-label="Fermer">✕</button></div><div id="dsv"></div></div></div>
 <div id="info"><span id="dim"></span><span>MMGS · Édition de la pièce</span></div>
+<footer class="legal">Sugar CAD est un projet indépendant, non affilié à Dassault Systèmes ; SolidWorks est une marque de ses propriétaires. Les résultats de calcul sont indicatifs. Bibliothèques : JSCAD, three.js, jsPDF (licence MIT).</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@jscad/modeling@2.12.0/dist/jscad-modeling.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@jscad/modeling@2.12.0/dist/jscad-modeling.min.js" crossorigin="anonymous"></script>
+<script>window.jscadModeling||document.write('<script src="https://unpkg.com/@jscad/modeling@2.12.0/dist/jscad-modeling.min.js" crossorigin="anonymous"><\/script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+<script>window.THREE||document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" crossorigin="anonymous"><\/script>')</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous"></script>
+<script>window.jspdf||document.write('<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" crossorigin="anonymous"><\/script>')</script>
 <script>
 const $=s=>document.getElementById(s);
 function makeFeatures(jm){
@@ -533,8 +553,8 @@ return [base,...tiges,...disq]`],
 ['Boulon + écrou',`const tete=cylinder({radius:10,height:8,segments:6,center:[0,0,4]})
 const tige=cylinder({radius:6,height:50,segments:48,center:[0,0,-21]})
 const filets=Array.from({length:12},(_,i)=>colorize([.3,.4,.55],translate([0,0,-4-i*3.4],torus({innerRadius:.7,outerRadius:6}))))
-const ecrou=subtract(cylinder({radius:10,height:9,segments:6,center:[0,0,-40]}),cylinder({radius:6,height:12,center:[0,0,-40]}))
-return [tete,tige,colorize([.5,.72,.8],ecrou),...filets]`],
+const ecr=subtract(cylinder({radius:10,height:9,segments:6,center:[0,0,-40]}),cylinder({radius:6,height:12,center:[0,0,-40]}))
+return [tete,tige,colorize([.5,.72,.8],ecr),...filets]`],
 ['Texte en relief',`// Texte 3D : texte3d(texte, {height, epaisseur, profondeur})
 return [cuboid({size:[130,40,4],center:[62,7,-2]}), colorize([.15,.5,.8], texte3d('SUGAR 3D',{height:14,epaisseur:2.2,profondeur:4}))]`],
 ['Plaque nominative',`const f=chanfrein2d(rectangle({size:[110,36],center:[55,10]}),6)
@@ -676,7 +696,7 @@ function build(g,i){
  const col=g.color?new THREE.Color(g.color[0],g.color[1],g.color[2]):new THREE.Color(PAL[i%PAL.length]);
  const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:col,roughness:.5,metalness:.2,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:1,polygonOffsetUnits:1}));
  m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo,30),new THREE.LineBasicMaterial({color:0x1d2433})));return m}
-function explain(e){const m=String(e&&e.message||e);
+function explain(e){const m=String(e&&e.message||e);if(m==='LOOPTIMEOUT')return 'Boucle trop longue (plus de 8 s) : exécution interrompue. Vérifie la condition d’arrêt de ta boucle.';
  if(m==='VIDE')return 'Rien à afficher : termine ton code par return suivi de la pièce.';
  if(e instanceof SyntaxError)return 'Erreur d’écriture : vérifie parenthèses, virgules et accolades.';
  if(e instanceof ReferenceError)return 'Mot inconnu : '+m.split(' ')[0]+'. Vérifie l’orthographe (voir Aide).';
@@ -690,10 +710,11 @@ function fit(){grp.updateMatrixWorld(true);const bb=box();if(bb.isEmpty())return
 function tree(vols){const t=$('tree');t.innerHTML='<div class="row"><b>▾ Pièce1</b></div><div class="row">⌂ Origine</div><div class="row">▭ Plan de face · Plan de dessus · Plan de droite</div><div class="row"><b>▾ Corps volumiques('+solids.length+')</b></div>';
  solids.forEach((g,i)=>{const r=document.createElement('label');r.className='row';r.style.paddingLeft='18px';
   const c='#'+meshes[i].material.color.getHexString();
-  r.innerHTML='<input type="checkbox" '+(vis[i]?'checked':'')+'><input type="color" value="'+c+'" style="width:24px;height:20px;padding:0;border:1px solid #333">'+pn(g,i)+' <small style="color:#5b6b7c">'+fmt(vols[i]/1000)+' cm³</small>';
+  r.innerHTML='<input type="checkbox" '+(vis[i]?'checked':'')+'><input type="color" value="'+c+'" style="width:24px;height:20px;padding:0;border:1px solid #333">'+pe(g,i)+' <small style="color:#5b6b7c">'+fmt(vols[i]/1000)+' cm³</small>';
   r.firstChild.onchange=e=>{vis[i]=e.target.checked;meshes[i].visible=vis[i];draw()};r.querySelector('input[type=color]').oninput=e=>{CO[i]=e.target.value;meshes[i].material.color.set(e.target.value);draw()};t.appendChild(r)})}
 
 const PM=new WeakMap(),DENS={acier:7.85,alu:2.70,inox:8.0,laiton:8.5,cuivre:8.96,plastique:1.05,bois:.7,titane:4.5};
+const pe=(g,i)=>String(pn(g,i)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const pn=(g,i)=>{const p=PM.get(g);return p?p.name+(p.n>1?' #'+(p.k+1):''):'Corps '+(i+1)};
 API.part=(name,g,o={})=>{if(!g||!g.polygons)throw new Error('part() attend un solide 3D');const rot=o.rot||[0,0,0],at=o.at,list=Array.isArray(at)&&Array.isArray(at[0])?at:[at||null];
  return list.map((pos,k)=>{let s=g;if(rot.some(a=>a))s=jm.transforms.rotate(rot.map(a=>a*Math.PI/180),s);if(pos)s=jm.transforms.translate(pos,s);if(o.color)s=jm.colors.colorize(o.color,s);
@@ -712,7 +733,7 @@ function asmUpdate(){try{const tag=solids.map(s=>PM.get(s)),any=tag.some(Boolean
   const pc=ctr(bs[i]),dv=pc.map((x,k)=>x-c[k]),k=dv.map(Math.abs).indexOf(Math.max(...dv.map(Math.abs))),e=[0,0,0];
   if(p.ex)asmBase.push(p.ex);else{e[k]=(Math.abs(dv[k])<1e-6?(k===2?1:0):Math.sign(dv[k]))*D*.5;if(!e[0]&&!e[1]&&!e[2])e[2]=0;asmBase.push(e)}
   let v=0;try{v=Math.abs(jm.measurements.measureVolume(s))}catch(x){}const m=p.mat&&DENS[p.mat]?v/1000*DENS[p.mat]:0;M+=m;
-  rows+='<tr><td>'+pn(s,i)+'</td><td>'+(p.mat||'—')+'</td><td>'+fmt(v/1000)+' cm³</td><td>'+(m?fmt(m)+' g':'—')+'</td></tr>'});
+  rows+='<tr><td>'+pe(s,i)+'</td><td>'+(p.mat||'—')+'</td><td>'+fmt(v/1000)+' cm³</td><td>'+(m?fmt(m)+' g':'—')+'</td></tr>'});
  I.innerHTML='<table><tr><th>Pièce</th><th>Matériau</th><th>Volume</th><th>Masse</th></tr>'+rows+'</table><p>Masse totale (pièces avec matériau) : <b>'+fmt(M)+' g</b></p>';asmApply()}catch(e){}}
 $('exs').oninput=e=>{exF=e.target.value/100;$('exv').textContent=e.target.value+' %';asmApply()};
 $('asx').onclick=()=>{meshes.forEach(m=>m.material.emissive.set(0));$('aso').innerHTML='';draw()};
@@ -722,7 +743,7 @@ $('asc').onclick=()=>{const o=$('aso');o.textContent='Calcul…';setTimeout(()=>
   let v=0;try{v=Math.abs(jm.measurements.measureVolume(jm.booleans.intersect(solids[idx[a]],solids[idx[b]])))}catch(x){}
   if(v>.5)hit.push([idx[a],idx[b],v])}
  hit.forEach(h=>{[h[0],h[1]].forEach(i=>meshes[i].material.emissive.set(0x8a1fa0))});
- o.innerHTML=hit.length?'<p class="bad">'+hit.length+' interférence(s) :</p><ul>'+hit.map(h=>'<li>'+pn(solids[h[0]],h[0])+' × '+pn(solids[h[1]],h[1])+' : '+fmt(h[2])+' mm³</li>').join('')+'</ul>':'<p class="ok">✓ Aucune interférence entre les pièces nommées.</p>';if(cut)o.innerHTML+='<p>Vérification limitée aux 600 premières paires.</p>';draw()}catch(e){o.textContent='Vérification impossible : '+e.message}},30)};
+ o.innerHTML=hit.length?'<p class="bad">'+hit.length+' interférence(s) :</p><ul>'+hit.map(h=>'<li>'+pe(solids[h[0]],h[0])+' × '+pe(solids[h[1]],h[1])+' : '+fmt(h[2])+' mm³</li>').join('')+'</ul>':'<p class="ok">✓ Aucune interférence entre les pièces nommées.</p>';if(cut)o.innerHTML+='<p>Vérification limitée aux 600 premières paires.</p>';draw()}catch(e){o.textContent='Vérification impossible : '+e.message}},30)};
 const ASMX=`// Assemblage : part() nomme les pièces, contre() les pose sans calculer les cotes à la main
 const L=80,l=60
 const pos=[[-30,-20,5],[30,-20,5],[-30,20,5],[30,20,5]]
@@ -746,7 +767,7 @@ function outline(g){let o=null;try{o=GM.geom2.toOutlines?GM.geom2.toOutlines(g):
 function resamp(p,n){const L=[0];for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];L.push(L[i]+Math.hypot(b[0]-a[0],b[1]-a[1]))}
  const T=L[p.length],r=[];for(let k=0;k<n;k++){const d=T*k/n;let i=0;while(i<p.length-1&&L[i+1]<=d)i++;const a=p[i],b=p[(i+1)%p.length],s=(d-L[i])/((L[i+1]-L[i])||1);r.push([a[0]+(b[0]-a[0])*s,a[1]+(b[1]-a[1])*s])}return r}
 function align(a,b){let best=0,bd=1e18;for(let s=0;s<b.length;s++){let d=0;for(let i=0;i<a.length;i+=4){const q=b[(i+s)%b.length];d+=(a[i][0]-q[0])**2+(a[i][1]-q[1])**2}if(d<bd){bd=d;best=s}}return b.map((_,i)=>b[(i+best)%b.length])}
-function mkSl(sl,base){let s=jm.extrusions.extrudeFromSlices({numberOfSlices:sl.length,capStart:true,capEnd:true,callback:(pr,i)=>GM.slice.fromPoints(sl[i])},base);
+function mkSl(sl,base){let s=jm.extrusions.extrudeFromSlices({numberOfSlices:sl.length,capStart:true,capEnd:true,callback:(pr,i)=>(jm.extrusions.slice||GM.slice).fromPoints(sl[i])},base);
  try{if(jm.measurements.measureVolume(s)<0)s=GM.geom3.invert(s)}catch(e){}return s}
 function loftSl(a,b,o){const n=o.n||96,h=o.h==null?30:o.h,st=Math.max(1,Math.round(o.pas||1)),tw=(o.twist||0)*Math.PI/180,A=resamp(a,n),B=align(A,resamp(b,n)),sl=[];
  for(let k=0;k<=st;k++){const t=k/st,c=Math.cos(tw*t),s=Math.sin(tw*t);sl.push(A.map((q,i)=>{const x=q[0]+(B[i][0]-q[0])*t,y=q[1]+(B[i][1]-q[1])*t;return[x*c-y*s,x*s+y*c,h*t]}))}return sl}
@@ -810,10 +831,12 @@ calc();
  const p0=API.part;API.part=(name,g,o)=>Array.isArray(g)?g.flat(Infinity).flatMap(x=>p0(name,x,o)):p0(name,g,o)})();
 /*NEW4*/
 const CO={};let H=[],hp=-1,sh2=[];
+let T0=0;const __chk=()=>{if(Date.now()-T0>8000)throw new Error('LOOPTIMEOUT')};
+const guard=src=>src.replace(/\b(?:while|for)\s*\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)\s*\{/g,'$&__chk();').replace(/\bdo\s*\{/g,'$&__chk();');
 function run(doFit){if(doFit)for(const k in CO)delete CO[k];sh2=[];hlr();if(H[hp]!==code.value){H=H.slice(0,hp+1);H.push(code.value);hp=H.length-1}hist();
  meshes.forEach(m=>{grp.remove(m);m.geometry.dispose();m.material.dispose()});meshes=[];solids=[];vis=[];
  try{
-  const res=new Function(...Object.keys(API),'"use strict";'+code.value)(...Object.values(API));
+  T0=Date.now();const res=new Function(...Object.keys(API),'__chk','"use strict";return (function(){'+guard(code.value)+'\n})()\n//# sourceURL=sugar-user.js')(...Object.values(API),__chk);
   const vols=[];
   [].concat(res).flat(Infinity).filter(Boolean).forEach(s=>{if(s.sides){sh2.push(s);s=jm.extrusions.extrudeLinear({height:2},s)}if(!s.polygons)return;
    const m=build(s,solids.length);if(CO[solids.length])m.material.color.set(CO[solids.length]);grp.add(m);meshes.push(m);solids.push(s);vis.push(true);let v=0;try{v=Math.abs(jm.measurements.measureVolume(s))}catch(e){}vols.push(v)});
@@ -914,7 +937,7 @@ function clip(){const ax=$('cx').value,pl=ax?[cp]:[];meshes.forEach(m=>{m.materi
 $('cx').onchange=()=>{clip();draw()};$('cs').oninput=()=>{clip();draw()};
 $('tg').onclick=()=>{grid.visible=!grid.visible;$('tg').classList.toggle('on',grid.visible);draw()};
 $('bgc').oninput=e=>{view.style.background=e.target.value};
-$('tt').onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme==='dark'?'':'dark'};
+$('tt').onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme==='dark'?'light':'dark';try{localStorage.setItem('sugar-theme',d.dataset.theme)}catch(e){}};
 let meas=false,pa=null,mk=[],st=[0,0];const rc=new THREE.Raycaster(),mp=new THREE.Vector2();
 $('tm').onclick=()=>{meas=!meas;$('tm').classList.toggle('on',meas);pa=null;mk.forEach(m=>S.remove(m));mk=[];note(meas?'Clique deux points sur la pièce.':'');draw()};
 view.addEventListener('pointerdown',e=>{st=[e.clientX,e.clientY]});
@@ -941,7 +964,7 @@ $('ps').onclick=()=>{const n=$('pn').value.trim();if(!n){note('Donne un nom au p
 $('po').onclick=()=>{const n=$('pl').value,p=prj();if(n&&p[n]!=null){code.value=p[n];$('pn').value=n;run(true)}};
 $('pj').onclick=()=>save('sugar-projets.json',new Blob([JSON.stringify(prj(),null,1)],{type:'application/json'}));
 $('pi').onclick=()=>$('pf').click();
-$('pf').onchange=async e=>{try{const o=JSON.parse(await e.target.files[0].text());localStorage.setItem(PK,JSON.stringify(Object.assign(prj(),o)));plist();note('Projets importés.')}catch(x){note('Fichier JSON invalide.')}};
+$('pf').onchange=async e=>{if(!confirm('Ce fichier contient du code qui sera exécuté quand tu ouvriras le projet. Importe uniquement des projets de confiance. Continuer ?')){e.target.value='';return}try{const o=JSON.parse(await e.target.files[0].text());localStorage.setItem(PK,JSON.stringify(Object.assign(prj(),o)));plist();note('Projets importés.')}catch(x){note('Fichier JSON invalide.')}};
 function fmtCode(s){let d=0;return s.split('\n').map(l=>{const t=l.trim();if(!t)return '';const i=t.indexOf('//'),a=(i<0?t:t.slice(0,i)).replace(/'[^']*'|"[^"]*"/g,'""');let lead=0;while(')}]'.includes(a[lead]||'#'))lead++;const ind=Math.max(0,d-lead);d=Math.max(0,d+a.split('').filter(c=>'{[('.includes(c)).length-a.split('').filter(c=>')}]'.includes(c)).length);return '  '.repeat(ind)+t}).join('\n')}
 $('fmc').onclick=()=>{code.value=fmtCode(code.value);run(false)};
 $('un').onclick=()=>{if(hp>0){hp--;code.value=H[hp];run(false)}};
@@ -980,19 +1003,19 @@ $('mf').onclick=()=>{const objs=[];solids.forEach((g,i)=>{if(!vis[i])return;cons
  const rl='<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Target="/3D/3dmodel.model" Id="rel0" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/></Relationships>';
  save('sugar-piece.3mf',zip([['[Content_Types].xml',ct],['_rels/.rels',rl],['3D/3dmodel.model',model]]))};
 const I={
- fr:{run:'▶ Exécuter',fit:'⌖ Recentrer',stl:'⤓ Exporter STL',pdf:'⤓ Fiche PDF',clear:'✕ Effacer',fmc:'Formater',tm:'Mesurer',tg:'Grille',si:'Importer STL',di:'Importer DXF',tt:'Sombre',ps:'Enregistrer',po:'Ouvrir',pi:'Importer .json','#tree':'Arbre','#exl':'Exemples (50)','#hp':'Aide','#py':'Python'},
- en:{run:'▶ Run',fit:'⌖ Recenter',stl:'⤓ Export STL',pdf:'⤓ PDF sheet',clear:'✕ Clear',fmc:'Format',tm:'Measure',tg:'Grid',si:'Import STL',di:'Import DXF',tt:'Dark',ps:'Save',po:'Open',pi:'Import .json','#tree':'Tree','#exl':'Examples (50)','#hp':'Help','#py':'Python'},
- ar:{run:'▶ تشغيل',fit:'⌖ توسيط',stl:'⤓ تصدير STL',pdf:'⤓ ورقة PDF',clear:'✕ مسح',fmc:'تنسيق',tm:'قياس',tg:'شبكة',si:'استيراد STL',di:'استيراد DXF',tt:'داكن',ps:'حفظ',po:'فتح',pi:'استيراد .json','#tree':'الشجرة','#exl':'أمثلة (50)','#hp':'مساعدة','#py':'Python'}};
+ fr:{run:'▶ Exécuter',fit:'⌖ Recentrer',stl:'⤓ Exporter STL',pdf:'⤓ Fiche PDF',clear:'✕ Effacer',fmc:'Formater',tm:'Mesurer',tg:'Grille',si:'Importer STL',di:'Importer DXF',ii:'Importer image → code',tt:'Sombre',ps:'Enregistrer',po:'Ouvrir',pi:'Importer .json','#tree':'Arbre','#exl':'Exemples (58)','#hp':'Aide','#py':'Python'},
+ en:{run:'▶ Run',fit:'⌖ Recenter',stl:'⤓ Export STL',pdf:'⤓ PDF sheet',clear:'✕ Clear',fmc:'Format',tm:'Measure',tg:'Grid',si:'Import STL',di:'Import DXF',ii:'Import image → code',tt:'Dark',ps:'Save',po:'Open',pi:'Import .json','#tree':'Tree','#exl':'Examples (58)','#hp':'Help','#py':'Python'},
+ ar:{run:'▶ تشغيل',fit:'⌖ توسيط',stl:'⤓ تصدير STL',pdf:'⤓ ورقة PDF',clear:'✕ مسح',fmc:'تنسيق',tm:'قياس',tg:'شبكة',si:'استيراد STL',di:'استيراد DXF',ii:'استيراد صورة ← كود',tt:'داكن',ps:'حفظ',po:'فتح',pi:'استيراد .json','#tree':'الشجرة','#exl':'أمثلة (58)','#hp':'مساعدة','#py':'Python'}};
 function lang(l){const d=I[l]||I.fr;for(const k in d)if(k[0]!=='#'){const e=$(k);if(e)e.textContent=d[k]}document.querySelectorAll('.tabs button').forEach(b=>{const x=d['#'+b.dataset.t];if(x)b.textContent=x});try{localStorage.setItem('sugar-lang',l)}catch(e){}}
 $('lg').onchange=e=>lang(e.target.value);
 let sl='fr';try{sl=localStorage.getItem('sugar-lang')||'fr'}catch(e){}
 $('lg').value=sl;lang(sl);
-let BASE=1;try{new Function('throw new Error("x")')()}catch(e){const m=/(?:<anonymous>|Function):(\d+):/.exec(e.stack||'');if(m)BASE=+m[1]}
+let BASE=1;try{new Function('throw new Error("x")\n//# sourceURL=sugar-user.js')()}catch(e){const m=/(?:sugar-user\.js|<anonymous>|Function):(\d+):/.exec(e.stack||'');if(m)BASE=+m[1]}
 function errLine(e){
  if(e instanceof SyntaxError){const a=code.value.split('\n'),eof=/end of (input|data|script)/i;
   for(let n=1;n<=a.length;n++){try{new Function('"use strict";'+a.slice(0,n).join('\n'))}catch(x){if(!eof.test(x.message))return n}}
   return 0}
- const m=/(?:<anonymous>|Function):(\d+):/.exec(e&&e.stack||'');return m?Math.max(1,+m[1]-BASE+1):0}
+ const m=/(?:sugar-user\.js|<anonymous>|Function):(\d+):/.exec(e&&e.stack||'');{const n=m?Math.max(1,+m[1]-BASE+1):0;return n>code.value.split('\n').length?0:n}}
 const LH=20;let ML=0;
 function pos(){const h=$('eh');if(!ML){h.style.display='none';return}h.style.display='block';h.style.top=(10+(ML-1)*LH-code.scrollTop)+'px'}
 function mark(L){ML=L;if(L)code.scrollTop=Math.max(0,(L-3)*LH);pos()}
@@ -1026,6 +1049,64 @@ function parseDXF(t){const a=t.split('\n').map(s=>s.trim()),E=[];let c=null;
 async function impDXF(f){if(!f)return;try{const r=parseDXF(await f.text()),k=IMP2D.push(r.g)-1;code.value='// '+f.name+' importé (DXF, '+r.n+' contours fermés). Pour passer en 3D : return extrudeLinear({height:5}, importe2d['+k+'])\nreturn importe2d['+k+']';run(true)}catch(x){note('Import impossible : aucun contour fermé trouvé (DXF ASCII seulement).')}}
 function impFile(f){if(f&&f.name.toLowerCase().endsWith('.dxf'))impDXF(f);else impSTL(f)}
 $('di').onclick=()=>$('df').click();$('df').onchange=e=>impDXF(e.target.files[0]);
+/*IMG*/
+function img2code(d,W,H,nom){
+ const n=W*H,g=new Float32Array(n);
+ for(let i=0;i<n;i++){const a=d[4*i+3]/255;g[i]=(.299*d[4*i]+.587*d[4*i+1]+.114*d[4*i+2])*a+255*(1-a)}
+ const b=[];for(let x=0;x<W;x++){b.push(g[x],g[(H-1)*W+x])}for(let y=0;y<H;y++){b.push(g[y*W],g[y*W+W-1])}
+ b.sort((p,q)=>p-q);const bg=b[b.length>>1];
+ const hs=new Array(256).fill(0);for(let i=0;i<n;i++)hs[Math.max(0,Math.min(255,Math.round(g[i])))]++;
+ let sum=0;for(let i=0;i<256;i++)sum+=i*hs[i];let sB=0,wB=0,best=-1,th=128;
+ for(let t=0;t<256;t++){wB+=hs[t];if(!wB)continue;const wF=n-wB;if(!wF)break;sB+=t*hs[t];const mB=sB/wB,mF=(sum-sB)/wF,v=wB*wF*(mB-mF)*(mB-mF);if(v>best){best=v;th=t}}
+ const PW=W+2,PH=H+2,V=PW+1,m=new Uint8Array(PW*PH);let cnt=0;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const i=y*W+x,f=bg>th?g[i]<=th:g[i]>th;if(f){m[(y+1)*PW+x+1]=1;cnt++}}
+ if(!cnt)return{err:'Aucune forme détectée dans cette image.'};
+ const out=new Map(),add=(x1,y1,x2,y2)=>{const k=y1*V+x1;let a=out.get(k);if(!a)out.set(k,a=[]);a.push([x2,y2])};
+ for(let y=1;y<=H;y++)for(let x=1;x<=W;x++){if(!m[y*PW+x])continue;
+  if(!m[(y-1)*PW+x])add(x,y,x+1,y);if(!m[y*PW+x+1])add(x+1,y,x+1,y+1);
+  if(!m[(y+1)*PW+x])add(x+1,y+1,x,y+1);if(!m[y*PW+x-1])add(x,y+1,x,y)}
+ const raw=[];
+ for(const [k0,a0] of out){while(a0.length){const sx=k0%V,sy=(k0-sx)/V;let e=a0.pop(),cx=e[0],cy=e[1],px=sx,py=sy,gd=0;const L=[[sx,sy]];
+  while(!(cx===sx&&cy===sy)){L.push([cx,cy]);const a=out.get(cy*V+cx);if(!a||!a.length)break;let ix=a.length-1;
+   if(a.length>1){const dx=cx-px,dy=cy-py;let bs=-1e9;for(let j=0;j<a.length;j++){const ex=a[j][0]-cx,ey=a[j][1]-cy,c=dx*ey-dy*ex;if(c>bs){bs=c;ix=j}}}
+   const nx=a.splice(ix,1)[0];px=cx;py=cy;cx=nx[0];cy=nx[1];if(++gd>2000000)break}
+  if(cx===sx&&cy===sy&&L.length>=4)raw.push(L)}}
+ const ar=P=>{let s=0;for(let i=0;i<P.length;i++){const q=P[(i+1)%P.length];s+=P[i][0]*q[1]-q[0]*P[i][1]}return s/2};
+ const inside=(pt,P)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[i],b=P[j];if((a[1]>pt[1])!==(b[1]>pt[1])&&pt[0]<(b[0]-a[0])*(pt[1]-a[1])/(b[1]-a[1])+a[0])c=!c}return c};
+ const big=raw.map(L=>({L,a:Math.abs(ar(L))})).filter(o=>o.a>=6).sort((p,q)=>q.a-p.a).slice(0,60);
+ if(!big.length)return{err:'Forme trop petite ou trop fine : utilise une image plus contrastée.'};
+ big.forEach(o=>{const t=o.L[0];o.d=0;big.forEach(p=>{if(p!==o&&p.a>o.a&&inside([t[0]+.01,t[1]+.01],p.L))o.d++})});
+ const dp=(P,e)=>{if(P.length<3)return P;const a=P[0],b=P[P.length-1],dx=b[0]-a[0],dy=b[1]-a[1],l=Math.hypot(dx,dy)||1;let mx=0,ix=0;
+  for(let i=1;i<P.length-1;i++){const dd=Math.abs((P[i][0]-a[0])*dy-(P[i][1]-a[1])*dx)/l;if(dd>mx){mx=dd;ix=i}}
+  if(mx>e){const A=dp(P.slice(0,ix+1),e),B=dp(P.slice(ix),e);return A.slice(0,-1).concat(B)}return[a,b]};
+ const simp=(L,e)=>{let ix=0,mx=-1;for(let i=1;i<L.length;i++){const dd=Math.hypot(L[i][0]-L[0][0],L[i][1]-L[0][1]);if(dd>mx){mx=dd;ix=i}}
+  const A=dp(L.slice(0,ix+1),e),B=dp(L.slice(ix).concat([L[0]]),e);return A.slice(0,-1).concat(B.slice(0,-1))};
+ const s=100/Math.max(W,H);let eps=.7,polys;
+ for(let it=0;it<8;it++){polys=[];let tot=0;
+  big.forEach(o=>{const S=simp(o.L,eps).map(q=>[+((q[0]-1-W/2)*s).toFixed(2),+((H/2-(q[1]-1))*s).toFixed(2)]);
+   const C=S.filter((q,i)=>{const r=S[(i+1)%S.length];return q[0]!==r[0]||q[1]!==r[1]});
+   if(C.length>=3&&Math.abs(ar(C))>0.05){if(ar(C)<0)C.reverse();polys.push({C,d:o.d});tot+=C.length}});
+  if(tot<=1200)break;eps+=.5}
+ if(!polys.length)return{err:'Contour introuvable : essaie une image plus nette.'};
+ polys.sort((p,q)=>p.d-q.d);
+ const code=['// Image : '+String(nom||'image').replace(/[\r\n]/g,' ')+' — silhouette convertie en contour 3D (100 mm max)','const E = 5 // @p Épaisseur (mm)'];
+ polys.forEach((o,i)=>code.push('const c'+(i+1)+' = '+JSON.stringify(o.C)));
+ const dm=Math.max(...polys.map(o=>o.d));let first=true;
+ for(let d=0;d<=dm;d++){const ids=polys.map((o,i)=>o.d===d?'polygon({points:c'+(i+1)+'})':null).filter(Boolean);if(!ids.length)continue;
+  if(first){code.push('let f = union('+ids.join(', ')+')');first=false}
+  else code.push('f = '+(d%2?'subtract':'union')+'(f, '+ids.join(', ')+')')}
+ code.push('return extrudeLinear({height:E}, f)');
+ return{code:code.join('\n'),n:polys.length}}
+/*ENDIMG*/
+function impIMG(f){if(!f)return;const url=URL.createObjectURL(f),im=new Image();
+ im.onload=()=>{URL.revokeObjectURL(url);try{const M=200,k=Math.min(1,M/Math.max(im.width,im.height)),W=Math.max(2,Math.round(im.width*k)),H=Math.max(2,Math.round(im.height*k));
+  const cv=document.createElement('canvas');cv.width=W;cv.height=H;const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,W,H);cx.drawImage(im,0,0,W,H);
+  const r=img2code(cx.getImageData(0,0,W,H).data,W,H,f.name);
+  if(!r.code){note(r.err);return}
+  code.value=r.code;run(true);tab('tree')}catch(e){note('Image : '+(e&&e.message||e))}};
+ im.onerror=()=>{URL.revokeObjectURL(url);note('Impossible de lire cette image.')};im.src=url}
+$('ii').onclick=()=>$('imf2').click();$('imf2').onchange=e=>{impIMG(e.target.files[0]);e.target.value=''};
+
 const KW=new Set(['const','let','var','return','for','of','in','if','else','function','while','true','false','null','Math','Array']);
 function hlr(){const s=code.value;let o='',m;const re=/(\/\/[^\n]*)|('[^'\n]*'|"[^"\n]*"|`[^`]*`)|(\b\d+\.?\d*\b)|([A-Za-z_$][\w$]*)|([\s\S])/g;
  while((m=re.exec(s))){const t=m[0],e=t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -1122,6 +1203,93 @@ $('ag').onclick=()=>{const q=$('aq').value.trim();if(!q)return;const r=FT.gen(q)
  if(!r){o.innerHTML='<p class="hint">Je n’ai pas compris. Essaie : plaque, cube, cylindre, tube, sphère, boîtier ou engrenage, avec dimensions (100×60×10), nombre de trous ou diamètre. Pour boulon, roulement, drone… ouvre l’onglet Pièces.</p>';return}
  code.value=r.code;code.dispatchEvent(new Event('input'));run(true);tab('prm');renderParams();note('« '+r.title+' » généré. Ajuste les paramètres en direct.');o.innerHTML=''};
 $('aq').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('ag').click()}});
+
+/* --- Image → programme --- */
+const IMG=(()=>{
+ const gray=(d,w,h)=>{const g=new Uint8Array(w*h);for(let i=0;i<w*h;i++){const a=d[4*i+3]/255,v=.299*d[4*i]+.587*d[4*i+1]+.114*d[4*i+2];g[i]=Math.round(v*a+255*(1-a))}return g};
+ const blur=(g,w,h)=>{const o=new Uint8Array(w*h);for(let y=0;y<h;y++)for(let x=0;x<w;x++){let s=0,n=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){const xx=x+dx,yy=y+dy;if(xx>=0&&yy>=0&&xx<w&&yy<h){s+=g[yy*w+xx];n++}}o[y*w+x]=Math.round(s/n)}return o};
+ const otsu=g=>{const hi=new Array(256).fill(0);for(let i=0;i<g.length;i++)hi[g[i]]++;const n=g.length;let sum=0;for(let i=0;i<256;i++)sum+=i*hi[i];let sb=0,wb=0,mx=-1,th=128;for(let t=0;t<256;t++){wb+=hi[t];if(!wb)continue;const wf=n-wb;if(!wf)break;sb+=t*hi[t];const mb=sb/wb,mf=(sum-sb)/wf,v=wb*wf*(mb-mf)*(mb-mf);if(v>mx){mx=v;th=t+1}}return th};
+ const mask=(g,w,h,t,inv)=>{const PW=w+2,m=new Uint8Array(PW*(h+2));for(let y=0;y<h;y++)for(let x=0;x<w;x++){const dark=g[y*w+x]<t;m[(y+1)*PW+x+1]=(inv?!dark:dark)?1:0}return m};
+ const trace=(m,PW,PH)=>{const V=PW+1,out=new Map(),E=[];
+  const add=(x0,y0,x1,y1)=>{const id=E.length;E.push([x0,y0,x1,y1]);const k=x0+y0*V;let l=out.get(k);if(!l){l=[];out.set(k,l)}l.push(id)};
+  for(let y=0;y<PH;y++)for(let x=0;x<PW;x++){if(!m[y*PW+x])continue;
+   if(y===0||!m[(y-1)*PW+x])add(x,y,x+1,y);
+   if(x===PW-1||!m[y*PW+x+1])add(x+1,y,x+1,y+1);
+   if(y===PH-1||!m[(y+1)*PW+x])add(x+1,y+1,x,y+1);
+   if(x===0||!m[y*PW+x-1])add(x,y+1,x,y)}
+  const used=new Uint8Array(E.length),loops=[];
+  for(let s=0;s<E.length;s++){if(used[s])continue;const pts=[];let e=s,guard=0;
+   while(guard++<E.length+2){used[e]=1;const q=E[e],dx=q[2]-q[0],dy=q[3]-q[1];pts.push([q[0],q[1]]);
+    const c=out.get(q[2]+q[3]*V)||[];let nx=-1;
+    const pref=[[-dy,dx],[dx,dy],[dy,-dx]];
+    for(const pr of pref){for(const id of c){const r=E[id];if(r[2]-r[0]===pr[0]&&r[3]-r[1]===pr[1]&&(!used[id]||id===s)){nx=id;break}}if(nx>=0)break}
+    if(nx<0||nx===s)break;e=nx}
+   loops.push(pts)}
+  return loops};
+ const collapse=p=>{const n=p.length,o=[];for(let i=0;i<n;i++){const a=p[(i+n-1)%n],b=p[i],c=p[(i+1)%n];if((b[0]-a[0])*(c[1]-b[1])-(b[1]-a[1])*(c[0]-b[0])!==0)o.push([b[0]-1,b[1]-1])}return o};
+ const area=p=>{let s=0;for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length];s+=a[0]*b[1]-b[0]*a[1]}return s/2};
+ const pip=(e,p)=>{let c=false;for(let i=0,j=p.length-1;i<p.length;j=i++){const a=p[i],b=p[j];if((a[1]>e[1])!==(b[1]>e[1])&&e[0]<(b[0]-a[0])*(e[1]-a[1])/(b[1]-a[1])+a[0])c=!c}return c};
+ const dp=(p,eps)=>{const keep=new Uint8Array(p.length);keep[0]=keep[p.length-1]=1;const st=[[0,p.length-1]];
+  while(st.length){const[a,b]=st.pop(),A=p[a],B=p[b],dx=B[0]-A[0],dy=B[1]-A[1],L=Math.hypot(dx,dy);let md=-1,mi=-1;
+   for(let i=a+1;i<b;i++){const d=L?Math.abs(dy*(p[i][0]-A[0])-dx*(p[i][1]-A[1]))/L:Math.hypot(p[i][0]-A[0],p[i][1]-A[1]);if(d>md){md=d;mi=i}}
+   if(md>eps){keep[mi]=1;st.push([a,mi],[mi,b])}}
+  return p.filter((_,i)=>keep[i])};
+ const simp=(p,eps)=>{if(p.length<=4||eps<=0)return p;let fi=0,fd=-1;for(let i=1;i<p.length;i++){const d=Math.hypot(p[i][0]-p[0][0],p[i][1]-p[0][1]);if(d>fd){fd=d;fi=i}}
+  const a=dp(p.slice(0,fi+1),eps),b=dp(p.slice(fi).concat([p[0]]),eps);return a.slice(0,-1).concat(b.slice(0,-1))};
+ const analyse=(g,w,h,o)=>{const t=o.t||otsu(g),PW=w+2,PH=h+2,m=mask(g,w,h,t,o.inv);
+  const raw=trace(m,PW,PH).map(collapse).filter(p=>p.length>=4).map(p=>({p,a:area(p)})).filter(x=>Math.abs(x.a)>=(o.minA||4));
+  raw.sort((a,b)=>Math.abs(b.a)-Math.abs(a.a));if(raw.length>(o.maxLoops||250))raw.length=o.maxLoops||250;
+  raw.forEach((x,i)=>{const a=x.p[0],b=x.p[1],L=Math.hypot(b[0]-a[0],b[1]-a[1])||1,e=[a[0]+(b[0]-a[0])/L*.5,a[1]+(b[1]-a[1])/L*.5];let d=0;for(let j=0;j<i;j++)if(pip(e,raw[j].p))d++;x.d=d});
+  const loops=[];raw.forEach(x=>{const s=simp(x.p,o.eps==null?1:o.eps);if(s.length>=3&&Math.abs(area(s))>=1)loops.push({d:x.d,p:s,a:Math.abs(x.a)})});
+  loops.sort((a,b)=>a.d-b.d||b.a-a.a);
+  return{loops,w,h,t,holes:loops.filter(x=>x.d%2).length}};
+ const code=(r,o)=>{const W=o.W||80,E=o.E||5,n=r.loops.length;
+  const L=r.loops.map(x=>{let q=x.p.map(z=>[z[0],r.h-z[1]]);if(area(q)<0)q=q.reverse();return' ['+x.d+',['+q.map(z=>'['+z[0]+','+z[1]+']').join(',')+']]'});
+  return['// Image → programme : '+n+' contour(s), '+r.holes+' trou(s)/îlot(s) · seuil '+r.t,
+   'const W = '+W+' // @p Largeur (mm)','const E = '+E+' // @p Épaisseur (mm)',
+   'const PX = '+r.w,'const PY = '+r.h,'const S = W / PX',
+   'const C = [',L.join(',\n'),']',
+   'let f = null',
+   'for (const [d, pts] of C) {',
+   '  const p = polygon({ points: pts.map(q => [(q[0] - PX / 2) * S, (q[1] - PY / 2) * S]) })',
+   '  f = f === null ? p : (d % 2 === 0 ? union(f, p) : subtract(f, p))',
+   '}',
+   'return extrudeLinear({ height: E }, f)'].join('\n')};
+ return{gray,blur,otsu,analyse,code}})();
+
+(function(){
+ const L3=(a,b,c)=>{const l=$('lg').value;return l==='en'?b:l==='ar'?c:a};
+ let img=null,G=null,GW=0,GH=0,otsuV=128;
+ const say=t=>{$('imm').textContent=t||''};
+ const thr=()=>$('imA').checked?otsuV:+$('imt').value;
+ function preview(){if(!G)return;const t=thr(),inv=$('imi').checked,cv=$('imc');cv.width=GW;cv.height=GH;const x=cv.getContext('2d'),id=x.createImageData(GW,GH);
+  for(let i=0;i<G.length;i++){const f=(G[i]<t)!==inv,j=4*i;id.data[j]=f?79:24;id.data[j+1]=f?140:28;id.data[j+2]=f?255:36;id.data[j+3]=255}
+  x.putImageData(id,0,0);cv.style.display='block';$('imgo').disabled=false}
+ function rebuild(){if(!img)return;const nw=img.naturalWidth||300,nh=img.naturalHeight||300,m=+$('imd').value,k=Math.min(1,m/Math.max(nw,nh)),w=Math.max(8,Math.round(nw*k)),h=Math.max(8,Math.round(nh*k));
+  const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,w,h);x.imageSmoothingQuality='high';x.drawImage(img,0,0,w,h);
+  const d=x.getImageData(0,0,w,h).data;G=IMG.blur(IMG.gray(d,w,h),w,h);GW=w;GH=h;otsuV=IMG.otsu(G);if($('imA').checked)$('imt').value=otsuV;preview()}
+ $('imf').onchange=e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+  if(!/^image\//.test(f.type)&&!/\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(f.name)){say(L3('Ce fichier n’est pas une image.','This file is not an image.','هذا الملف ليس صورة.'));return}
+  const u=URL.createObjectURL(f),im=new Image();
+  im.onload=()=>{URL.revokeObjectURL(u);img=im;try{rebuild();say('')}catch(x){say(L3('Image illisible : ','Unreadable image: ','تعذّرت قراءة الصورة: ')+(x&&x.message||x))}};
+  im.onerror=()=>{URL.revokeObjectURL(u);say(L3('Image illisible (formats : PNG, JPG, WEBP, GIF, BMP, SVG).','Unreadable image (formats: PNG, JPG, WEBP, GIF, BMP, SVG).','تعذّرت قراءة الصورة (الصيغ: PNG, JPG, WEBP, GIF, BMP, SVG).'))};
+  im.src=u};
+ $('imt').oninput=()=>{$('imA').checked=false;preview()};
+ $('imA').onchange=()=>{if($('imA').checked)$('imt').value=otsuV;preview()};
+ $('imi').onchange=preview;$('imd').onchange=()=>{try{rebuild()}catch(x){say(String(x&&x.message||x))}};
+ $('imgo').onclick=()=>{
+  if(!G){say(L3('Charge d’abord une image.','Upload an image first.','حمّل صورة أولاً.'));return}
+  try{const e0=+$('ims').value/10,minA=Math.max(4,GW*GH*.0004);let ok=false,n=0,hl=0;
+   for(const eps of [e0,e0*1.6+.5,e0*2.5+1.5]){
+    const r=IMG.analyse(G,GW,GH,{t:thr(),inv:$('imi').checked,eps,minA});
+    if(!r.loops.length){say(L3('Aucune forme détectée : change le seuil ou coche « Inverser ».','No shape detected: change the threshold or tick “Invert”.','لم يُكتشف أي شكل: غيّر العتبة أو فعّل «عكس».'));return}
+    code.value=IMG.code(r,{W:80,E:5});code.dispatchEvent(new Event('input'));run(true);n=r.loops.length;hl=r.holes;
+    if(!$('msg').textContent){ok=true;break}}
+   if(!ok){say(L3('La forme est trop complexe : augmente « Lissage » ou baisse « Détail ».','The shape is too complex: increase “Smoothing” or lower “Detail”.','الشكل معقّد جداً: ارفع «التنعيم» أو اخفض «التفاصيل».'));return}
+   say('');tab('prm');renderParams();
+   note(L3('Programme généré depuis l’image ('+n+' contours, '+hl+' trous/îlots). Ajuste Largeur et Épaisseur dans Params.','Program generated from the image ('+n+' outlines, '+hl+' holes/islands). Adjust Width and Thickness in Params.','تم توليد البرنامج من الصورة ('+n+' حدود، '+hl+' ثقوب/جزر). عدّل العرض والسمك من Params.'))
+  }catch(x){say(L3('Échec de l’analyse : ','Analysis failed: ','فشل التحليل: ')+(x&&x.message||x))}};
+})();
 /* --- Bibliothèque --- */
 (function(){const h=$('lib');h.innerHTML='<p class="hint">Pièces paramétriques prêtes à modifier. Un clic remplace ton code.</p>';
  for(const c in FT.LIB){const t=document.createElement('h4');t.textContent=c;h.appendChild(t);const g=document.createElement('div');g.className='lg2';
@@ -1224,7 +1392,7 @@ $('kB').onclick=()=>{run2=!run2;if(run2)requestAnimationFrame(loop);setBtn()};
 const setBtn=()=>{$('kB').textContent=t(run2?'ps':'pl')};
 function costUI(){const m=+$('cM').value||0,pr=+$('cP').value||0,sc=+$('cS').value||0,mi=+$('cT').value||0,ra=+$('cR').value||0,q=Math.max(1,+$('cQ').value||1),cm=m/1000*pr*(1+sc/100),cu=mi/60*ra,cp=cm+cu;$('cO').innerHTML=t('cm')+' : '+fx(cm,2)+'<br>'+t('cu')+' : '+fx(cu,2)+'<br><b>'+t('cp')+' : '+fx(cp,2)+'</b><br>'+t('ct')+' (×'+q+') : <b>'+fx(cp*q,2)+'</b>'}
 $('cG').onclick=()=>{try{updAna();$('cM').value=fx(BOMD.totalMass,1)}catch(e){}costUI()};
-function tr(){document.querySelectorAll('#eng [data-k]').forEach(e=>e.textContent=t(e.dataset.k));tb.textContent=t('tab');setBtn();tolUI();draw();costUI()}
+function tr(){document.querySelectorAll('#eng [data-k]').forEach(e=>{if(!e.closest('#pidbox')&&X[e.dataset.k])e.textContent=t(e.dataset.k)});tb.textContent=t('tab');setBtn();tolUI();draw();costUI()}
 document.querySelectorAll('#tD,#tF').forEach(e=>e.oninput=tolUI);document.querySelectorAll('#kM,#kW,#kR,#kL,#kG,#kC,#kD').forEach(e=>e.oninput=()=>{if(!run2)draw();else{}});document.querySelectorAll('#cM,#cP,#cS,#cT,#cR,#cQ').forEach(e=>e.oninput=costUI);
 $('lg').addEventListener('change',()=>setTimeout(tr,0));tr();
 document.querySelectorAll('.tabs button').forEach(b=>{if(b!==tb)b.addEventListener('click',()=>{run2=false;setBtn()})});
@@ -1388,7 +1556,7 @@ Visserie et roulements ISO|ISO fasteners and bearings|براغي ورولمان�
 Insérer la pièce|Insert the part|إدراج القطعة
 Générer la pièce|Generate the part|توليد القطعة
 Pièce1 · CAO par le code|Part1 · CAD by code|قطعة1 · تصميم بالكود
-Exemples (50)|Examples (50)|أمثلة (50)
+Exemples (58)|Examples (58)|أمثلة (58)
 Dimensions (mm)|Dimensions (mm)|الأبعاد (مم)
 Masse (g)|Mass (g)|الكتلة (غ)
 Matériau|Material|المادة`.split('\n').forEach(l=>{const a=l.split('|');M[a[0]]=a});
@@ -1447,17 +1615,52 @@ Ouvrir|Open|فتح
 Importer .json|Import .json|استيراد .json
 Mesurer|Measure|قياس
 Grille|Grid|شبكة
-Sombre|Dark|داكن`.split('\n').forEach(l=>{const a=l.split('|');if(a.length==3)M[a[0]]=a});
-const ix={fr:0,en:1,ar:2},W=new WeakMap(),A=['placeholder','title'];let busy=false;
+Image → programme|Image → program|صورة ← برنامج
+Charge une image (logo, silhouette, dessin au trait) : le site détecte les contours et génère le programme 3D, prêt à modifier.|Upload an image (logo, silhouette, line drawing): the site detects the outlines and generates the 3D program, ready to edit.|حمّل صورة (شعار، ظل، رسم خطي): يكتشف الموقع الحدود ويولّد برنامج القطعة ثلاثية الأبعاد جاهزاً للتعديل.
+Charger une image|Upload an image|تحميل صورة
+Seuil|Threshold|العتبة
+Auto|Auto|تلقائي
+Détail|Detail|التفاصيل
+Lissage|Smoothing|التنعيم
+Inverser (formes claires sur fond sombre)|Invert (light shapes on dark background)|عكس (أشكال فاتحة على خلفية داكنة)
+Générer le programme depuis l’image|Generate the program from the image|توليد البرنامج من الصورة
+Sombre|Dark|داكن
+Sugar CAD est un projet indépendant, non affilié à Dassault Systèmes ; SolidWorks est une marque de ses propriétaires. Les résultats de calcul sont indicatifs. Bibliothèques : JSCAD, three.js, jsPDF (licence MIT).|Sugar CAD is an independent project, not affiliated with Dassault Systèmes; SolidWorks is a trademark of its owners. Calculation results are indicative. Libraries: JSCAD, three.js, jsPDF (MIT license).|Sugar CAD مشروع مستقل وغير تابع لشركة Dassault Systèmes؛ SolidWorks علامة تجارية لأصحابها. نتائج الحسابات تقريبية. المكتبات: JSCAD وthree.js وjsPDF (رخصة MIT).
+Résultats indicatifs : à vérifier avec une référence reconnue avant tout usage réel.|Indicative results: check against a recognised reference before any real use.|نتائج تقريبية: تحقّق منها بمرجع معتمد قبل أي استعمال فعلي.`.split('\n').forEach(l=>{const a=l.split('|');if(a.length==3)M[a[0]]=a});
+let mo=null;const ix={fr:0,en:1,ar:2},W=new WeakMap(),A=['placeholder','title'];let busy=false;
 const RE=/^([^\p{L}\p{N}]*)([\s\S]*?)(\s*)$/u;
-function tx(n,L){const o=W.has(n)?W.get(n):n.nodeValue,m=RE.exec(o);if(!m||!M[m[2]])return;if(!W.has(n))W.set(n,o);n.nodeValue=L===0?o:m[1]+M[m[2]][L]+m[3]}
-function at(e,L){if(!e.getAttribute)return;A.forEach(a=>{const v=e.getAttribute(a);if(!v)return;const k='_fr'+a,o=e[k]!==undefined?e[k]:v;if(M[o]){e[k]=o;e.setAttribute(a,M[o][L])}})}
+function tx(n,L){const r=W.get(n),c=n.nodeValue,o=r&&(c===r.t||c===r.o)?r.o:c,m=RE.exec(o);if(!m||!M[m[2]])return;const v=L===0?o:m[1]+M[m[2]][L]+m[3];W.set(n,{o:o,t:v});if(c!==v)n.nodeValue=v}
+function at(e,L){if(!e.getAttribute)return;A.forEach(a=>{const v=e.getAttribute(a);if(!v)return;const k='_fr'+a,kt='_tr'+a,o=(e[k]!==undefined&&(v===e[kt]||v===e[k]))?e[k]:v;if(M[o]){e[k]=o;const nv=M[o][L];e[kt]=nv;if(v!==nv)e.setAttribute(a,nv)}})}
 function go(root){const L=ix[document.getElementById('lg').value]||0;busy=true;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>/^(SCRIPT|STYLE|TEXTAREA|PRE|CODE|OPTION)$/.test(n.parentNode.nodeName)&&n.parentNode.nodeName!=='OPTION'?2:1});let n;while(n=w.nextNode())tx(n,L);root.querySelectorAll&&root.querySelectorAll('[placeholder],[title]').forEach(e=>at(e,L));busy=false}
-function all(){const l=document.getElementById('lg').value;document.documentElement.lang=l;document.body.classList.toggle('rtl',l==='ar');go(document.body)}
+function all(){const l=document.getElementById('lg').value;document.documentElement.lang=l;document.body.classList.toggle('rtl',l==='ar');go(document.body);if(mo)mo.takeRecords()}
 const st=document.createElement('style');st.textContent='.rtl .pane,.rtl .tools,.rtl .rib,.rtl .tabs,.rtl #land,.rtl .top .doc{direction:rtl}.rtl .pane pre,.rtl .pane code,.rtl textarea{direction:ltr;text-align:left}';document.head.appendChild(st);
 document.getElementById('lg').addEventListener('change',()=>setTimeout(all,10));
-let q=0;new MutationObserver(()=>{if(busy||q)return;q=setTimeout(()=>{q=0;all()},60)}).observe(document.body,{childList:true,subtree:true,characterData:true});
+let q=0;const pend=new Set(),SKIP=/^(SCRIPT|STYLE|TEXTAREA|PRE|CODE)$/;
+mo=new MutationObserver(ms=>{ms.forEach(m=>{if(m.type==='characterData')pend.add(m.target);else m.addedNodes.forEach(x=>pend.add(x))});if(q||!pend.size)return;
+q=setTimeout(()=>{q=0;const L=ix[document.getElementById('lg').value]||0,arr=[...pend];pend.clear();if(L){arr.forEach(x=>{if(!x.isConnected)return;if(x.nodeType===3){if(!SKIP.test(x.parentNode.nodeName))tx(x,L)}else if(x.nodeType===1)go(x)})}mo.takeRecords()},60)});
+mo.observe(document.body,{childList:true,subtree:true,characterData:true});
 setTimeout(all,50)})();
+</script>
+<script>
+(function(){
+const g=id=>document.getElementById(id);
+const NM={un:'Annuler',re:'Rétablir',rl:'Tourner à gauche',rr:'Tourner à droite',imt:'Seuil',imA:'Seuil automatique',imd:'Détail',ims:'Lissage',imi:'Inverser',vn:'Nom de la version',qL:'Longueur L',qb:'Largeur b',qh:'Hauteur h',qF:'Force F',qq:'Charge répartie q',qT:'Température T',qD:'Variation ΔT',exs:'Éclatement de l’assemblage',bgc:'Couleur de fond',cs:'Position de la coupe',pn:'Nom du projet',hs:'Historique'};
+function names(){document.querySelectorAll('button,input,select,textarea').forEach(e=>{
+ if(e.getAttribute('aria-label')||e.type==='hidden'||(e.id&&document.querySelector('label[for="'+e.id+'"]')))return;
+ const own=(e.textContent||'').trim();
+ if(e.tagName==='BUTTON'&&own.length>2)return;
+ if(e.tagName!=='BUTTON'&&e.closest('label'))return;
+ const n=NM[e.id]||e.getAttribute('title')||e.getAttribute('placeholder');if(n)e.setAttribute('aria-label',n)})}
+function boot(){
+ const hl=g('hl');if(hl)hl.setAttribute('aria-hidden','true');
+ const m=g('msg');if(m){m.setAttribute('role','status');m.setAttribute('aria-live','polite')}
+ const d=g('dlg');if(d){d.setAttribute('role','dialog');d.setAttribute('aria-modal','true');d.setAttribute('aria-label','Dessin technique')}
+ const tb=document.querySelector('.tabs');
+ if(tb){const sync=()=>tb.querySelectorAll('button').forEach(b=>{if(b.classList.contains('on'))b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});sync();new MutationObserver(sync).observe(tb,{subtree:true,attributes:true,attributeFilter:['class']})}
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){const x=g('dlg'),b=g('dx');if(x&&x.classList.contains('on')&&b)b.click()}});
+ names();setTimeout(names,800);const l=g('lg');if(l)l.addEventListener('change',()=>setTimeout(names,100))}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
 </script>
 </body>
 </html>
